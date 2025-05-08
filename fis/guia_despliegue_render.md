@@ -36,12 +36,12 @@ Opcionalmente se puede seleccionar la rama en la cuál se encuentra el código a
 **7.**  Seleccionar la opción de Deploy Static Site.
 
 **8.**  Una vez seleccionado, se mostrará la url al sitio. Para poder acceder es necesario sumar el path al index.html. En el caso del template de countries:\
-    Acceder a la url, sumándole el path interfaces/index.html al final.\
+    Acceder a la url, sumándole el path interface/index.html al final.\
     En este ejemplo se deberá acceder a
     https://msusviela-github-io-6ybg.onrender.com/interface/index.html
 
 ![](./assets/3012ec4b8055b123e1f64af7f56972fc824d9f7c.png)
 
 
-Documentación de Render para sitios estáticos:
+**Documentación de Render para sitios estáticos:**
 <https://render.com/docs/static-sites>
