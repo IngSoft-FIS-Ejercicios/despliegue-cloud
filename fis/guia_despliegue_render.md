@@ -1,4 +1,4 @@
-**Guía de despliegue con Render**
+# Guía de despliegue con Render
 
 El despliegue de aplicaciones y sitios web en la nube es una práctica fundamental en el desarrollo de software. En entornos educativos, utilizar GitHub Pages permite a docentes y estudiantes publicar proyectos de manera sencilla, asegurando accesibilidad, mantenibilidad y control de versiones.
 
@@ -12,7 +12,7 @@ Render es un servicio de hosting basado en la nube que permite publicar sitios w
 
 **Control de Versiones:** Al estar integrado con Git, permite rastrear cambios y colaborar de manera eficiente.
 
-**Pasos**
+## Pasos
 
 **Pre-requisito**: Contar con un repositorio público o con un repositorio propio (que no se encuentre dentro de ninguna organización)
 
