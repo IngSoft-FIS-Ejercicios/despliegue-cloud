@@ -1,4 +1,4 @@
-\*\*Ficha técnica Fundamentos de Ingeniería de Software (Dictado S1 2025)\*\*
+# Ficha técnica Fundamentos de Ingeniería de Software (Dictado S1 2025)
 
 **Carrera:**
 
