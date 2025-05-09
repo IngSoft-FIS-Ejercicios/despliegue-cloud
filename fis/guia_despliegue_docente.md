@@ -30,7 +30,8 @@ El despliegue de aplicaciones y sitios web en la nube es una práctica fundament
    - Cambiar la **visibilidad a público** para que el contenido sea accesible.
    - En la opción de **Build and deployment**, seleccionar **GitHub Actions** como _source_.
    - Seleccionar la opción _create your own_.
-3. **Sustituir el bloque de código por defecto** por el siguiente y nombrar el archivo como `deploy.yml` (es importante incluir la extensión `.yml`):
+   ![](./d69f1d127a7ff80bafa633dcfdbe23592179d33d.png)
+3. **Sustituir el bloque de código por defecto** por el siguiente y nombrar el archivo como `deploy.yml` (**es importante incluir la extensión `.yml`**):
 
 ```yaml
 name: Deploy static content to Pages
@@ -74,21 +75,49 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-> **Nota**: Si la estructura del proyecto no sigue el directorio `/src`, modificar el _path_ en el código.
+> **Aclaración: Es importante destacar que si se tiene la lógica de la interfaz y del dominio en un path diferente al brindado por el
+> template del obligatorio (/src) se deberá cambiar en el código brindado el path en donde está indicado.**
+>
+> En la sección de branches se indica la rama sobre la cual se realizará
+> el deploy (se mostrará el contenido que corresponda al código que se
+> encuentre en esa rama). En este caso, se hará sobre la rama de **main,
+> es decir, lo que se mostrará en el navegador una vez terminado el
+> proceso corresponde al código en main.**
+>
+> ![](./f4cccf6c4d71cbb385b9b0970259dddf748ad6dc.png){width="5.697915573053368in"
+> height="3.71875in"}
 
-4. **Seleccionar _Commit Changes_** para guardar el workflow. Si se hace sobre `main`, recordar traer ese cambio a otras ramas si es necesario.
-5. **Esperar a que se realice el deploy**. Puede tomar algunos minutos.
-6. **Verificar el estado del deploy** en el menú derecho de la sección _Code_.
-7. **Acceder a la URL** desde la pestaña _Settings_ > _Pages_.
-   - La URL seguirá la estructura: `https://<usuario>.github.io/<repositorio>/interface/index.html`.
+En la sección de branches se indica la rama sobre la cual se realizará el deploy (se mostrará el contenido que corresponda al código que se encuentre en esa rama). En este caso, se hará sobre la rama de main, es decir, lo que se mostrará en el navegador una vez terminado el proceso corresponde al código en main. 
 
-## Solución de problemas
+![workflow](./assets//f4cccf6c4d71cbb385b9b0970259dddf748ad6dc.png)
 
-Si el deploy falla:
+4.  Seleccionar **Commit Changes** para guardar el workflow. Si se hace sobre main recordar traerse ese cambio a las ramas donde sea necesario.
 
-- Ir a la sección de **Actions**.
-- Seleccionar el workflow que falló y hacer clic en **Re-run all jobs**.
-- Verificar que el bloque de código se copió correctamente (la indentación en YAML es crítica).
-- Asegurar que el **path** al que apunta el deploy es el correcto.
+5.  Esperar a que se realice el deploy. Esto puede llevar algunos minutos.
 
----
+Se puede ver el estado del deploy en el menú que aparece a la derecha de la sección **Code** (ver nota al pie del documento si este paso falla):
+
+ ![](./c235428cdef0762f52bb5b8473cdf2897c1af592.png)
+
+> **Es importante considerar que muchas veces puede aparecer cómo realizado pero que puede tardar unos minutos en mostrar el contenido en la url.**
+
+6.  Ingresar a la pestaña de Settings del repositorio. En la sección de Pages se podrá ver la URL donde la aplicación se encuentra
+    hosteada.
+
+    ![](./811a75e965e6c2d038ed2d302caf0d15a10c403b.png)
+
+7.  Acceder a la url, sumándole el path interfaces/index.html al final.
+    En este ejemplo se deberá acceder a <https://ingsoft-fis-2025-1.github.io/prueba-deploy-pages-equipo1/interface/index.html>
+
+## Fallas frecuentes
+
+En caso de que falle se puede ir a la sección de Actions, seleccionar el workflow que falló:
+
+![](./06b754e5d3f3a8917c0b5aa571ec639af7a0778e.png){width="6.010415573053368in
+
+Seleccionar Re-run all jobs:
+
+![](./697e6150d7aaef6ab9728ed7381987833fd4f572.png)
+
+Si sigue fallando verificar que el bloque de código se copió correctamente (la identación es importante en los archivos de tipo
+.yml), que la extensión del archivo creado sea .yml y si el path al cuál se apunta es el deseado.
