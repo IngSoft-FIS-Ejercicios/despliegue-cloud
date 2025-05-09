@@ -83,13 +83,12 @@ jobs:
 > encuentre en esa rama). En este caso, se hará sobre la rama de **main,
 > es decir, lo que se mostrará en el navegador una vez terminado el
 > proceso corresponde al código en main.**
->
-> ![](./f4cccf6c4d71cbb385b9b0970259dddf748ad6dc.png){width="5.697915573053368in"
-> height="3.71875in"}
+> ![](./assets/f4cccf6c4d71cbb385b9b0970259dddf748ad6dc.png)
+
 
 En la sección de branches se indica la rama sobre la cual se realizará el deploy (se mostrará el contenido que corresponda al código que se encuentre en esa rama). En este caso, se hará sobre la rama de main, es decir, lo que se mostrará en el navegador una vez terminado el proceso corresponde al código en main. 
 
-![workflow](./assets//f4cccf6c4d71cbb385b9b0970259dddf748ad6dc.png)
+![workflow](./assets/f4cccf6c4d71cbb385b9b0970259dddf748ad6dc.png)
 
 4.  Seleccionar **Commit Changes** para guardar el workflow. Si se hace sobre main recordar traerse ese cambio a las ramas donde sea necesario.
 
@@ -97,14 +96,14 @@ En la sección de branches se indica la rama sobre la cual se realizará el depl
 
 Se puede ver el estado del deploy en el menú que aparece a la derecha de la sección **Code** (ver nota al pie del documento si este paso falla):
 
- ![](./c235428cdef0762f52bb5b8473cdf2897c1af592.png)
+ ![](./assets/c235428cdef0762f52bb5b8473cdf2897c1af592.png)
 
 > **Es importante considerar que muchas veces puede aparecer cómo realizado pero que puede tardar unos minutos en mostrar el contenido en la url.**
 
 6.  Ingresar a la pestaña de Settings del repositorio. En la sección de Pages se podrá ver la URL donde la aplicación se encuentra
     hosteada.
 
-    ![](./811a75e965e6c2d038ed2d302caf0d15a10c403b.png)
+    ![](./assets/811a75e965e6c2d038ed2d302caf0d15a10c403b.png)
 
 7.  Acceder a la url, sumándole el path interfaces/index.html al final.
     En este ejemplo se deberá acceder a <https://ingsoft-fis-2025-1.github.io/prueba-deploy-pages-equipo1/interface/index.html>
@@ -113,11 +112,11 @@ Se puede ver el estado del deploy en el menú que aparece a la derecha de la sec
 
 En caso de que falle se puede ir a la sección de Actions, seleccionar el workflow que falló:
 
-![](./06b754e5d3f3a8917c0b5aa571ec639af7a0778e.png){width="6.010415573053368in
+![](./assets/06b754e5d3f3a8917c0b5aa571ec639af7a0778e.png)
 
 Seleccionar Re-run all jobs:
 
-![](./697e6150d7aaef6ab9728ed7381987833fd4f572.png)
+![](./assets/697e6150d7aaef6ab9728ed7381987833fd4f572.png)
 
 Si sigue fallando verificar que el bloque de código se copió correctamente (la identación es importante en los archivos de tipo
 .yml), que la extensión del archivo creado sea .yml y si el path al cuál se apunta es el deseado.
