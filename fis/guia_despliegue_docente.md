@@ -30,7 +30,7 @@ El despliegue de aplicaciones y sitios web en la nube es una práctica fundament
    - Cambiar la **visibilidad a público** para que el contenido sea accesible.
    - En la opción de **Build and deployment**, seleccionar **GitHub Actions** como _source_.
    - Seleccionar la opción _create your own_.
-   ![](./d69f1d127a7ff80bafa633dcfdbe23592179d33d.png)
+   ![](./assets/d69f1d127a7ff80bafa633dcfdbe23592179d33d.png)
 3. **Sustituir el bloque de código por defecto** por el siguiente y nombrar el archivo como `deploy.yml` (**es importante incluir la extensión `.yml`**):
 
 ```yaml
