@@ -1,0 +1,64 @@
+@page "/NotificationModal"
+@using Domain
+@using Logic
+@inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
+@inject UserLogic UserLogic
+@inject PanelTaskLogic TaskLogic
+
+
+<div class="modal" style="display:@(showModal ? "flex" : "none")">
+    <div class="modal-content">
+        <span class="close" @onclick="CloseModal">&times;</span>
+        <h2>Notifications</h2>
+        <ul>
+            @if(notifications.Count == 0)
+            {
+                <li>No notifications</li>
+            }
+            else
+            {
+                @foreach (var notification in notifications)
+                {
+                    <li>
+                        <span>@notification.Message</span>
+                        <button class="noti-button" @onclick="() => RemoveNotification(notification)">Remove</button>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Action UpdateNotificationIcon { get; set; }
+    
+    private bool showModal = false;
+    private List<Domain.Notification> notifications;
+
+    protected override void OnInitialized()
+    {
+        notifications = UserLogic.GetNotifications(SessionLogic.GetCurrentUser());
+    }
+
+    public void ShowModal()
+    {
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+    
+    private void RemoveNotification(Domain.Notification notification) 
+    { 
+        UserLogic.RemoveNotification(SessionLogic.GetCurrentUser(), notification);
+        notifications = UserLogic.GetNotifications(SessionLogic.GetCurrentUser());
+        UpdateNotificationIcon?.Invoke();
+        StateHasChanged();
+        
+    }
+}

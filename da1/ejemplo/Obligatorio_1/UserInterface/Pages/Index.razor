@@ -1,0 +1,69 @@
+﻿@page "/"
+
+@using System.Reflection.Metadata
+@using Microsoft.VisualBasic
+@using Interface.Data
+
+@inject SessionLogic sessionService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Home</PageTitle>
+
+@if (!sessionService.IsUserActive())
+{
+    <div class="formLogIn">
+        <h1>Welcome</h1>
+        <form onsubmit="return false">
+            <input type="email" id="inEmail" placeholder=" Email" @bind="email" required>
+            <input type="password" id="inPassword" placeholder=" Password" @bind="password" required>
+            <input type="submit" value="Login" id="log-in" @onclick="Login">
+            <div class="error-message">@errorMessage</div>
+        </form>
+    </div>
+}
+else
+{
+    <div class="base">
+        <div class="home-container">
+            <div class="home-text">
+                <h2>Welcome to PanelTask</h2>
+                <p>PanelTask is a task management system that allows you to create and manage tasks for your team</p>
+            </div>
+            <div class="home-image">
+                <img src="img/home-image.jpg" alt="home-image"/>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    private string email;
+    private string password;
+    private string errorMessage;
+    
+    private async Task Login()
+    {
+        try
+        {
+            await sessionService.Login(email, password); // Hacer login asíncrono
+            errorMessage = string.Empty;
+            email = string.Empty;
+            password = string.Empty;
+            NavigationManager.NavigateTo("/", true); 
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await sessionService.InitializeAsync();
+            StateHasChanged(); 
+        }
+    }
+}

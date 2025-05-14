@@ -1,0 +1,235 @@
+﻿@page "/EpicGraphicReport"
+@using Domain
+@using Logic
+@inject EpicLogic EpicLogic
+@inject PanelLogic PanelLogic
+@inject GraphicReport GraphicReport
+
+<div class="base">
+    <div class="graphic-report-container">
+        <div class="title-container">
+            <h1>Graphic Report of @_selectedEpic.Title</h1>
+        </div>
+
+        <div class="report-container">
+            @if (EpicHasTasks())
+            {
+                <h2>Epic Data</h2>
+                <div class="doughnut-chart-container">
+                    <DoughnutChart @ref="_epicDoughnutChart" Width="500"/>
+
+                </div>
+                <div class="epic-statistics-container">
+                    <h4>@_totalExpectedHoursText</h4>
+                    <h4>@_totalInvestedHoursText</h4>
+                    <h4>@_totalRemainingTimeText</h4>
+                </div>
+                @if (EpicHasIncompleteTasks())
+                {
+                    <h2>Incomplete Tasks Data</h2>
+                    <div class="bar-chart-container"> 
+                        <BarChart @ref="_incompleteBarChar" Width="@_barChartWidth" Height="@_unfinishedChartHeight"/>
+                    </div>
+                }
+                
+                @if (EpicHasCompleteTasks())
+                {
+                    <h2>Finished Tasks Data</h2>
+                    <div class="bar-chart-container">
+                        <BarChart @ref="_finishedBarChart" Width="@_barChartWidth" Height="@_finishedChartHeight"/>
+                    </div>
+                }
+                
+            }
+            else
+            {
+                <div class="spacer"></div>
+                <h2>This Epic Has No Tasks</h2>
+                <div class="spacer"></div>
+
+            }
+            
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter, SupplyParameterFromQuery]
+    public int EpicId { get; set; }
+    
+    
+    private BarChart _incompleteBarChar = default!;
+    private BarChartOptions _incompleteBarCharOptions = default!;
+    private ChartData _incompleteChartData = default!;
+    
+    private BarChart _finishedBarChart = default!;
+    private BarChartOptions _finishedBarChartOptions = default!;
+    private ChartData _finishedChartData = default!;
+
+    private DoughnutChart _epicDoughnutChart = default!;
+    private DoughnutChartOptions _epicDoughnutChartOptions = default!;
+    private ChartData _epicDoughnutChartData = default!;
+    
+    private int _unfinishedChartHeight;
+    private int _finishedChartHeight;
+    private int _barChartWidth = 1000;
+    private bool _isFirstRender = true;
+
+    private string _totalExpectedHoursText = "";
+    private string _totalInvestedHoursText = "";
+    private string _totalRemainingTimeText = "";
+    
+
+    private Epic _selectedEpic;
+
+    protected override void OnInitialized()
+    {
+        _selectedEpic = EpicLogic.FindEpicById(EpicId);
+        
+        SetEpicDataDoughnut();
+        SetIncompleteBarChartTasks();
+        SetFinishBarCharTasks();
+        
+    }
+
+    private bool EpicHasTasks()
+    {
+        return PanelLogic.EpicHasTasks(_selectedEpic);
+    }
+    private bool EpicHasCompleteTasks()
+    {
+        return PanelLogic.EpicHasCompleteTasks(_selectedEpic);
+    }
+
+    private bool EpicHasIncompleteTasks()
+    {
+        return PanelLogic.EpicHasIncompleteTasks(_selectedEpic);
+    }
+
+
+    private void SetEpicDataDoughnut()
+    {
+        if (EpicHasTasks())
+        {
+            PrepareDoughnutChartData();
+            InitializeDoughnutChartOptions();
+            SetEpicTexts();
+        }
+    }
+    private void PrepareDoughnutChartData()
+    {
+        double? totalInvestedHours = PanelLogic.CalculateTotalInvestedTime(_selectedEpic) - PanelLogic.CalculateTotalOverdueHours(_selectedEpic);
+        double? totalHoursLeft = PanelLogic.CalculateRemainingTimePositive(_selectedEpic);
+        double? totalOverdueHours = PanelLogic.CalculateTotalOverdueHours(_selectedEpic);
+        _epicDoughnutChartData = new ChartData
+        {
+            Labels = new List<string> { "Invested Hours", "Overdue Hours", "Hours Left" },
+            Datasets = new List<IChartDataset>
+            {
+                new DoughnutChartDataset
+                {
+                    Label = "Tasks Distribution",
+                    Data = new List<double?> { totalInvestedHours, totalOverdueHours, totalHoursLeft },
+                    BackgroundColor = new List<string> { "#A05273", "#6B354C" , "#F5B7A9" }
+                }
+            }
+        
+        };
+    }
+    private void InitializeDoughnutChartOptions()
+    {
+        _epicDoughnutChartOptions = new();
+        _epicDoughnutChartOptions.Responsive = true;
+
+    }
+    private void SetEpicTexts()
+    {
+        _totalExpectedHoursText = "Expected Time: " + PanelLogic.CalculateTotalEstimatedTime(_selectedEpic).ToString();
+        _totalInvestedHoursText = "Invested Time: " + PanelLogic.CalculateTotalInvestedTime(_selectedEpic).ToString();
+        _totalRemainingTimeText = "Expected Remaining Time: " + PanelLogic.CalculateRemainingTimePositive(_selectedEpic).ToString();
+    }
+
+    private void SetIncompleteBarChartTasks()
+    {
+        if (EpicHasIncompleteTasks())
+        {
+            DataGraphicReportTasks unfinishTasksData = GraphicReport.GetUnfinishTasks(_selectedEpic);
+        
+            _incompleteChartData = new ChartData { Labels = unfinishTasksData.labels, Datasets = unfinishTasksData.datasets };
+
+            _incompleteBarCharOptions = new();
+            _incompleteBarCharOptions.Locale = "de-DE";
+            _incompleteBarCharOptions.Responsive = true;
+            _incompleteBarCharOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
+            _incompleteBarCharOptions.IndexAxis = "y";
+        
+            _incompleteBarCharOptions.Scales.X.Stacked = true;
+            _incompleteBarCharOptions.Scales.Y.Stacked = true;
+        
+            int unfinishedTasksCount = unfinishTasksData.labels.Count;
+            _unfinishedChartHeight = Math.Max(100, 60 +unfinishedTasksCount * 50);
+        }
+        
+    }
+
+    private void SetFinishBarCharTasks()
+    {
+        if (EpicHasCompleteTasks())
+        {
+            DataGraphicReportTasks finishTasksData = GraphicReport.GetFinishTasks(_selectedEpic);
+            _finishedChartData = new ChartData { Labels = finishTasksData.labels, Datasets = finishTasksData.datasets };
+
+            _finishedBarChartOptions = new();
+            _finishedBarChartOptions.Locale = "de-DE";
+            _finishedBarChartOptions.Responsive = true;
+            _finishedBarChartOptions.Interaction = new Interaction { Mode = InteractionMode.Y };
+            _finishedBarChartOptions.IndexAxis = "y";
+
+            _finishedBarChartOptions.Scales.X.Stacked = true;
+            _finishedBarChartOptions.Scales.Y.Stacked = true;
+
+            int finishedTasksCount = finishTasksData.labels.Count;
+            _finishedChartHeight = Math.Max(100, 60 + finishedTasksCount * 50);
+        }
+        
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (_epicDoughnutChartData != null && _epicDoughnutChartOptions != null)
+            {
+                await _epicDoughnutChart.InitializeAsync(_epicDoughnutChartData, _epicDoughnutChartOptions);
+            }
+
+            if (_incompleteChartData != null && _incompleteBarCharOptions != null)
+            {
+                await _incompleteBarChar.InitializeAsync(_incompleteChartData, _incompleteBarCharOptions);
+            }
+
+            if (_finishedChartData != null && _finishedBarChartOptions != null)
+            {
+                await _finishedBarChart.InitializeAsync(_finishedChartData, _finishedBarChartOptions);
+            }
+
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    
+    [JSInvokable]
+    public async Task OnWindowResize(int newWidth, int newHeight)
+    {
+        _barChartWidth = Math.Clamp((int)(newWidth * 0.8), 400, Math.Min(newWidth - 100, 1400));
+        _unfinishedChartHeight = Math.Clamp((int)(newHeight * 0.5), 300, 800);
+        _finishedChartHeight = Math.Clamp((int)(newHeight * 0.5), 300, 800);
+
+        StateHasChanged();
+    }
+
+}
+

@@ -1,0 +1,107 @@
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row {
+    height: 3.5rem;
+    background-color: #401229;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.oi {
+    width: 2rem;
+    font-size: 1.1rem;
+    top: -1px;
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item ::deep a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item ::deep a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .collapse {
+        display: block;
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 10px;
+}
+
+.icon-button {
+    width: 70px;
+    height: 70px;
+    background-color: #8a3853;
+    cursor: pointer;
+    color: #d5d5d5;
+    font-size: 1.8rem;
+    border: 3px solid #d5d5d5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out, background-color 0.3s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-button:hover {
+    background-color: #bf5469;
+    color: white;
+    transform: rotate(20deg) scale(1.2);
+}
+
+
+.profile-button:hover {
+    background-color: #044a0d;
+    color: white;
+}
+
+.noti{
+    cursor: pointer;
+}
+
+.noti:hover{
+    color: #c5b9b9;
+    transform: scale(1.2);
+}
+

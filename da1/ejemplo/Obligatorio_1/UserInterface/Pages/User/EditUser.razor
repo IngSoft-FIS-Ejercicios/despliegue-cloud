@@ -1,0 +1,125 @@
+@page "/EditUser"
+@using Domain
+@using Logic
+@inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
+@inject UserLogic UserLogic
+
+
+<div class="base">
+    <div class="form-container">
+        <h1>Edit User</h1>
+        <EditForm Model="@actualUser" OnValidSubmit="Edit" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="name">Name</label>
+                <input placeholder="Name" id="name"  @bind="newName" required/>
+            </div>
+            <div>
+                <label for="surname">Surname</label>
+                <input placeholder="surname" id="surname" @bind="newSurname" required/>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input placeholder="email" id="email"  @bind="newEmail" required/>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input placeholder="password" id="password"  @bind="newPassword" required/>
+            </div>
+            <input type="submit" value="Edit" id="edit-submit">
+            <div class="error-message">@errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    private User actualUser;
+    private User user;
+    private string newName;
+    private string newSurname;
+    private string newEmail;
+    private string newPassword;
+    private DateTime birthDate;
+    private string errorMessage = string.Empty;
+    private bool goProfile;
+
+    [Parameter, SupplyParameterFromQuery] public int userId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        DefineActualUser();
+        InitializeForm();
+    }
+
+    private void Edit()
+    {
+        try
+        {
+            CreateUser();
+            DecideModify();
+            DecideNavigation();
+
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+
+    }
+
+    private void CreateUser()
+    {
+        user = new User()
+        {
+            Name = newName,
+            Surname = newSurname,
+            Email = newEmail,
+            Password = newPassword,
+            BirthDate = birthDate,
+            Trashpaper = { }
+        };
+    }
+
+    private void InitializeForm()
+    {
+        newName = actualUser.Name;
+        newSurname = actualUser.Surname;
+        newEmail = actualUser.Email;
+        newPassword = actualUser.Password;
+        birthDate = actualUser.BirthDate;
+    }
+
+    private void DefineActualUser()
+    {
+        goProfile = userId == null;
+        actualUser = goProfile ? SessionLogic.GetCurrentUser() : UserLogic.GetUserById(userId);
+    }
+
+    private void DecideNavigation()
+    {
+        if (goProfile)
+        {
+            NavigationManager.NavigateTo("/Profile");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/ListUsers");
+        }
+    }
+
+    private void DecideModify()
+    {
+        if (goProfile)
+        {
+            UserLogic.ModifyUser(actualUser, actualUser, user);
+        }
+        else
+        {
+            UserLogic.ModifyUser(SessionLogic.GetCurrentUser(), actualUser, user);
+        }
+    }
+
+}

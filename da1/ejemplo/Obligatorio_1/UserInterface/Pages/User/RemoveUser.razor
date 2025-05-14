@@ -1,0 +1,76 @@
+@page "/RemoveUser"
+@using Domain
+@using Logic
+
+@inject PanelLogic PanelLogic
+@inject TeamLogic TeamLogic
+@inject UserLogic UserLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
+
+<div class="base">
+    <div class="form-container">
+        <h1>Remove User</h1>
+        <EditForm Model="@userToRemove" OnValidSubmit="Remove" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <select id="user" @bind="userId">
+                    <option value="" disabled selected>Select an user</option>
+                    @foreach (var user in UserLogic.GetAll())
+                    {
+                    <option value="@user.Id">@user.ToString()</option>
+                    }
+                </select>
+            </div>
+            <input type="submit" value="Remove" id="edit-submit">
+            <div class="error-message">@errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    User admin;
+    User userToRemove = new User();
+    int? userId;
+    private string errorMessage = string.Empty;
+    
+
+    protected override void OnInitialized()
+    {
+        admin = SessionLogic.GetCurrentUser();
+    }
+
+    private void checkUserIsCreator(User userToRemove)
+    {
+        if (PanelLogic.CheckUserIsCreator(userToRemove))
+        {
+            throw new ArgumentException("User is creator of a panel, cannot be removed");
+        }
+    }
+
+    private void CheckUserIsAdmin(User userToRemove)
+    {
+        if (TeamLogic.CheckUserIsAdmin(userToRemove))
+        {
+            throw new ArgumentException("User is administrator of a team, cannot be removed");
+        }
+    }
+    
+    private void Remove()
+    {
+        try
+        {
+            userToRemove = UserLogic.GetUserById(userId);
+            checkUserIsCreator(userToRemove);
+            CheckUserIsAdmin(userToRemove);
+            UserLogic.RemoveUser(admin, userToRemove);
+            NavigationManager.NavigateTo("");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+}

@@ -1,0 +1,92 @@
+@page "/Members"
+@using Domain
+@using Logic
+@inject NavigationManager Navigation
+@inject TeamLogic TeamLogic
+@inject SessionLogic SessionLogic
+
+<div class="base">
+    <div class="title-container">
+        <h1>Members List</h1>
+        <button class="add-button" @onclick="NavigateToAdd"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    @if (_team.TeamUsersList.Any())
+    {
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var member in _team.TeamUsersList)
+                {
+                    <tr>
+                        <td>@member.Name</td>
+                        <td>@member.Surname</td>
+                        <td>@member.Email</td>
+                        <td>@getRole(@member)</td>
+                        <td><button @onclick="() => { RemoveMember(member);}">Remove</button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            </div>
+        <div class="error-message">@_errorMessage</div>
+    }
+    else
+    {
+        <p class="empty">No members yet</p>
+    }
+</div>
+
+@code {
+
+    [Parameter, SupplyParameterFromQuery]
+    public int? teamId { get; set; }
+
+    private Team? _team;
+    
+    private string _errorMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (teamId != null)
+        {
+            _team = TeamLogic.FindTeamById(teamId);
+        }
+    }
+
+    private string getRole(User user)
+    {
+        if (_team.Administrator.Equals(user))
+        {
+            return "Administrator";
+        }
+
+        return "Member";
+    }
+    
+    private void RemoveMember(User user)
+    {
+        // Remove user from team
+        try
+        {
+            TeamLogic.RemoveMember(_team, SessionLogic.GetCurrentUser(), user);
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+    
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo($"/AddMember?teamId={teamId}");
+    }
+}

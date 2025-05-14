@@ -1,0 +1,53 @@
+@page "/AddComment"
+@using Domain
+@using Logic
+
+@inject PanelTaskLogic PanelTaskLogic
+@inject PanelLogic PanelLogic
+@inject NavigationManager Navigation
+@inject SessionLogic SessionLogic
+
+
+<div class="base">
+    <div class="form-container">
+        <h1>Add Comment</h1>
+        <EditForm Model="@_comment" OnValidSubmit="Add" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="description">Description</label>
+                <input placeholder="Description" id="description" @bind="_description" required/>
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+            <div class="error-message">@_errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Comment _comment = new Comment();
+    private string _description;
+    private string _errorMessage = string.Empty;
+    
+    [Parameter, SupplyParameterFromQuery]
+    public int taskId { get; set; }
+    
+    private void Add()
+    {
+        try
+        {
+            _comment.Description = _description;
+            _comment.Resolved = false;
+            _comment.DateResolution = null;
+            _comment.ResolverId = null;
+            _comment.CreatorId = SessionLogic.GetCurrentUser().Id;
+            PanelTask task = PanelLogic.findTaskById(taskId);
+            PanelTaskLogic.AddComment(task, _comment);
+            Navigation.NavigateTo($"/Comments?taskId={task.Id}");
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

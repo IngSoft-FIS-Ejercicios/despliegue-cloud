@@ -1,0 +1,33 @@
+@inherits LayoutComponentBase
+@inject SessionLogic sessionService
+
+<PageTitle>Interface</PageTitle>
+
+<div class="page">
+    @if (isUserLoaded)
+    {
+        <div class="sidebar">
+            <NavMenu/>
+        </div>
+    }
+    
+
+    <main>
+        @Body
+    </main>
+</div>
+
+@code {
+
+    private bool isUserLoaded = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await sessionService.InitializeAsync(); // Inicializa el usuario desde almacenamiento local
+            isUserLoaded = sessionService.IsUserActive();
+            StateHasChanged(); // Actualiza la interfaz después de cargar el usuario
+        }
+    }
+
+}

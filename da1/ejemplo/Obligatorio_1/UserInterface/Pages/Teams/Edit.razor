@@ -1,0 +1,89 @@
+@page "/EditTeam"
+@using Domain
+@using Logic
+@inject NavigationManager Navigation
+@inject SessionLogic SessionLogic
+@inject TeamLogic TeamLogic
+
+
+<div class="base">
+    <div class="form-container">
+        <h1>Edit Team</h1>
+        @if (_team != null)
+        {
+            <EditForm Model="@_team" OnValidSubmit="EditTeam" class="formEdit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div>
+                    <label for="name">Name</label>
+                    <input placeholder="Name" id="name" @bind="_newName" required/>
+                </div>
+                <div>
+                    <label for="description">Description</label>
+                    <input placeholder="Description" id="description" @bind="_newDescription" required/>
+                </div>
+                <div>
+                    <label for="max-users">Max users</label>
+                    <input placeholder="Max users" id="max-users" @bind="_newMaxUsers" type="number" min="0" max="50" required/>
+                </div>
+                <input type="submit" value="Edit" id="edit-submit">
+                <div class="error-message">@_errorMessage</div>
+            </EditForm>
+        }
+        else
+        {
+            <p>No team found</p>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, SupplyParameterFromQuery]
+    public int? teamId { get; set; }
+
+    private Team? _team;
+
+    private string _newName;
+    private string _newDescription;
+    private int? _newMaxUsers;
+    
+    private string _errorMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (teamId != null)
+        {
+            _team = TeamLogic.FindTeamById(teamId);
+            _newName = _team.TeamName;
+            _newDescription = _team.TaskDescription;
+            _newMaxUsers = _team.MaxUsersAllowed;
+        }
+    }
+    
+    private void EditTeam()
+    {
+        try
+        {
+            Team newTeam = new Team
+            {
+                TeamName = _newName,
+                TaskDescription = _newDescription,
+                MaxUsersAllowed = _newMaxUsers,
+                Administrator = _team.Administrator,
+                TeamCreationDate = _team.TeamCreationDate,
+                TeamUsersList = _team.TeamUsersList
+            };
+            TeamLogic.ModifyTeam(SessionLogic.GetCurrentUser(), _team, newTeam);
+            // clear fields
+            _newName = string.Empty;
+            _newDescription = string.Empty;
+            _newMaxUsers = 0;
+            _errorMessage = string.Empty;
+            Navigation.NavigateTo("/Teams");
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

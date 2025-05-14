@@ -1,0 +1,31 @@
+
+Date: 2024-11-17T15:58:23.2318638Z | Line: , Descripcion, 15/10/2060 | Error: Invalid input: 3 parts instead of 4 or 5.
+Date: 2024-11-17T15:58:23.2453940Z | Line: Titulo , Descripcion, 15/10/2060, 1 | Error: Id cannot be 1, that's the Id for OutdatedTasksPanel
+Date: 2024-11-17T15:58:23.2460440Z | Line: Titulo , Descripcion, 15/15/2060, 2 | Error: The DateTime represented by the string '15/15/2060' is not supported in calendar 'System.Globalization.GregorianCalendar'.
+Date: 2024-11-17T15:58:23.2466095Z | Line: Titulo , Descripcion, /2060, 2 | Error: String '/2060' was not recognized as a valid DateTime.
+Date: 2024-11-17T15:58:23.2473648Z | Line: Titulo , Descri 15/10/2060, 897899 | Error: Invalid input: 3 parts instead of 4 or 5.
+Date: 2024-11-17T15:58:23.2478394Z | Line: Titulo , Descripcion, 15/10/2060, 2, fsfs | Error: Input string was not in a correct format.
+Date: 2024-11-17T15:58:23.2482783Z | Line: Titulo , Descripcion, 15/10/2060, 2, 4556 | Error: Epic not found
+Date: 2024-11-17T15:58:23.2489467Z | Line: Titulo , Descripcion, 15/10/2060, 2, 4556 | Error: Epic not found
+Date: 2024-11-17T19:25:28.0621644Z | Line: , Descripcion, 15/10/2060 | Error: Invalid input: 3 parts instead of 4 or 5.
+Date: 2024-11-17T19:25:28.0775721Z | Line: Titulo , Descripcion, 15/10/2060, 1 | Error: Id cannot be 1, that's the Id for OutdatedTasksPanel
+Date: 2024-11-17T19:25:28.0783599Z | Line: Titulo , Descripcion, 15/15/2060, 2 | Error: The DateTime represented by the string '15/15/2060' is not supported in calendar 'System.Globalization.GregorianCalendar'.
+Date: 2024-11-17T19:25:28.0788617Z | Line: Titulo , Descripcion, /2060, 2 | Error: String '/2060' was not recognized as a valid DateTime.
+Date: 2024-11-17T19:25:28.0792874Z | Line: Titulo , Descri 15/10/2060, 897899 | Error: Invalid input: 3 parts instead of 4 or 5.
+Date: 2024-11-17T19:25:28.0796878Z | Line: Titulo , Descripcion, 15/10/2060, 2, fsfs | Error: Input string was not in a correct format.
+Date: 2024-11-17T19:25:28.0800835Z | Line: Titulo , Descripcion, 15/10/2060, 2, 4556 | Error: Epic not found
+Date: 2024-11-17T19:25:28.0804449Z | Line: Titulo , Descripcion, 15/10/2060, 2, 4556 | Error: Epic not found
+Date: 2024-11-20T02:25:29.8673473Z | Line: Archivo Importado Titulo1, Descripcion 1, 21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:25:30.0070331Z | Line: Archivo Importado Titulo2, Descripcion 2, 21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:25:30.0079410Z | Line: Archivo Importado Titulo3, Descripcion 3, 21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:58:02.3954952Z | Line: Archivo Importado Titulo1,Descripcion 1,21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:58:02.4269159Z | Line: Archivo Importado Titulo2,Descripcion 2,21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:58:02.4280124Z | Line: Archivo Importado Titulo3,Descripcion 3,21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:58:02.4288661Z | Line: Archivo Importado Titulo4,Descripcion 4,21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:58:02.4292731Z | Line: Archivo Importado Titulo5,Descripcion 5,21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T02:58:02.4295848Z | Line: Archivo Importado Titulo6,Descripcion 6,21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T05:23:02.2770930Z | Line: Contactar al cliente,Contactar al cliente para actualizar el estado del proyecto.,10/09/2024,3 | Error: Due date must be in the future
+Date: 2024-11-20T05:23:02.2857897Z | Line: Pagar proveedores,Revisar planilla de proveedores y pagar.,19/09/2024,3 | Error: Due date must be in the future
+Date: 2024-11-20T06:03:25.0050646Z | Line: Archivo Importado Titulo1, Descripcion 1, 21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T06:03:25.3113850Z | Line: Archivo Importado Titulo2, Descripcion 2, 21/10/2060,2,1 | Error: Epic not found
+Date: 2024-11-20T06:03:25.3120922Z | Line: Archivo Importado Titulo3, Descripcion 3, 21/10/2060,2,1 | Error: Epic not found

@@ -1,0 +1,80 @@
+﻿@page "/EditPanel"
+@using Logic
+@using Domain
+@using Repository
+@inject PanelLogic panelLogic
+@inject NavigationManager Navigation
+
+
+<div class="base">
+    <div class="form-container">
+        <h1>Edit Panel</h1>
+        @if (panel != null)
+        {
+                <EditForm Model="@panel" OnValidSubmit="Edit" class="formEdit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div>
+                        <label for="name">Name</label>
+                        <input placeholder="Name" id="name" @bind="_newName" required/>
+                    </div>
+                    <div>
+                        <label for="description">Description</label>
+                        <input placeholder="Description" id="description" @bind="_newDescription" required/>
+                    </div>
+                    <input type="submit" value="Edit" id="edit-submit">
+                    <div class="error-message">@_errorMessage</div>
+                </EditForm>
+        }
+        else
+        {
+            <p>No panel found</p>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, SupplyParameterFromQuery]
+    public int? panelId { get; set; }
+
+    private Panel? panel;
+
+    private string _newName;
+    private string _newDescription;
+
+    private string _errorMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (panelId != null)
+        {
+            panel = panelLogic.findPanelById(panelId);
+            _newName = panel.Name;
+            _newDescription = panel.Description;
+        }
+    }
+
+    private void Edit()
+    {
+        try
+        {
+            Panel newPanel = new Panel
+            {
+                Name = _newName,
+                Description = _newDescription,
+                Team = panel.Team,
+                Creator = panel.Creator,
+                PanelTaskList = panel.PanelTaskList
+            };
+            panelLogic.ModifyPanel(panel, newPanel);
+            // clear fields
+            _newName = string.Empty;
+            _newDescription = string.Empty;
+            Navigation.NavigateTo("/Panels");
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

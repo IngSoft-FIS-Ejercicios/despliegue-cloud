@@ -1,0 +1,73 @@
+@page "/EditEpic"
+@using Domain
+@using Logic
+@inject NavigationManager NavigationManager
+@inject EpicLogic EpicLogic
+
+<div class="base">
+    <div class="form-container">
+        <h1>Edit Epic</h1>
+        @if (_epic != null)
+        {
+        <EditForm Model="@_epic" OnValidSubmit="Edit" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="title">Title</label>
+                <input placeholder="title" id="title" @bind="_newTitle" required/>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <input placeholder="Description" id="description" @bind="_newDescription" required/>
+            </div>
+            <input type="submit" value="Edit" id="edit-submit">
+            <div class="error-message">@_errorMessage</div>
+        </EditForm>
+        }
+        else
+        {
+        <p>No epic found</p>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Parameter, SupplyParameterFromQuery]
+    public int EpicId { get; set; }
+    
+    private Epic _epic;
+    private Epic _newEpic;
+    private string _newTitle;
+    private string _newDescription;
+    private string _errorMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+
+        _epic = EpicLogic.FindEpicById(EpicId);
+        _newDescription = _epic.Description;
+        _newTitle = _epic.Title;
+    }
+
+    private void Edit()
+    {
+        try
+        {
+            _newEpic = new Epic(new DateTimeProvider())
+            {
+                Title = _newTitle,
+                Description = _newDescription,
+                Priority = _epic.Priority,
+                DueDate = _epic.DueDate,
+            };
+            EpicLogic.ModifyEpic(_epic, _newEpic);
+            NavigationManager.NavigateTo("/Epics");
+            _errorMessage = string.Empty;
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

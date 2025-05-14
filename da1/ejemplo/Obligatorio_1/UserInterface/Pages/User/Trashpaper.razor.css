@@ -1,0 +1,9 @@
+.title-container{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.btn-recover{
+    background-color: #26b050;
+}

@@ -1,0 +1,130 @@
+@page "/EditTask"
+@using Domain
+@using Logic
+
+@inject PanelTaskLogic PanelTaskLogic
+@inject NavigationManager NavigationManager
+@inject PanelLogic PanelLogic
+@inject EpicLogic EpicLogic
+
+
+<div class="base">
+    <div class="form-container">
+        <h1>Edit Task</h1>
+        @if (_task != null)
+        {
+        <EditForm Model="@_task" OnValidSubmit="Edit" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="title">Title</label>
+                <input placeholder="title" id="title" @bind="_newTitle" required/>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <input placeholder="Description" id="description" @bind="_newDescription" required/>
+            </div>
+            <div>
+                <label for="estTime">Estimated Time</label>
+                <input type="number" min="0"  id="estTime" @bind="@_newEstTime" required/>
+            </div>
+            <div>
+                <label for="epic">Epic</label>
+                <select id="epic" @bind="@_newEpic">
+                    <option value=@_actualEpic selected>@TitleOfEpic(_actualEpic)</option>
+                    @foreach (var epic in EpicLogic.GetAllEpics())
+                    {   
+                        @if(epic.Id != _actualEpic){<option value="@epic.Id">@epic.Title</option>}
+                    }
+                    <option value="">Remove Epic</option>
+                </select>
+            </div>
+            <input type="submit" value="Edit" id="edit-submit">
+            <div class="error-message">@_errorMessage</div>
+        </EditForm>
+        }
+        else
+        {
+        <p>No task found</p>
+        }
+    </div>
+</div>
+
+@code {
+    
+    [Parameter, SupplyParameterFromQuery]
+    public int taskId { get; set; }
+    
+    [Parameter, SupplyParameterFromQuery]
+    public int? panelId { get; set; }
+    
+    [Parameter, SupplyParameterFromQuery]
+    public int? epicId { get; set; }
+
+    
+    private PanelTask _task;
+    private PanelTask _newTask;
+    private string _newTitle;
+    private string _newDescription;
+    private string _newPriority;
+    private DateTime _newDueDate;
+    private string _errorMessage = string.Empty;
+    private int? _actualEpic;
+    private int? _newEpic;
+    private int _newEstTime;
+
+    protected override void OnInitialized()
+    {
+
+        _task = PanelLogic.findTaskById(taskId);
+        
+        _newTitle = _task.Title;
+        _newDescription = _task.Description;
+        _newPriority = _task.Priority;
+        _newDueDate = _task.DueDate;
+        _actualEpic = SetEpic();
+        _newEpic = _actualEpic;
+        _newEstTime = _task.EstimatedTime;
+    }
+
+    private void Edit()
+    {
+        try
+        {
+            IDateTimeProvider dateTimeProvider = new DateTimeProvider();
+            _newTask = new PanelTask(dateTimeProvider)
+            {
+                Title = _newTitle,
+                Description = _newDescription,
+                Priority = _newPriority,
+                DueDate = _newDueDate,
+                EstimatedTime = _newEstTime,
+                InvestedTime = _task.InvestedTime,
+                Epic = (_newEpic != null) ? EpicLogic.FindEpicById(_newEpic) : null,
+            };
+            PanelLogic.ModifyTask(_task, _newTask);
+            if(panelId is not null) NavigationManager.NavigateTo($"/Tasks?panelId={panelId}");
+            else NavigationManager.NavigateTo($"/Tasks?epicId={epicId}");
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+
+    private string TitleOfEpic(int? id)
+    {
+        if (id == null) return "No Epic";
+        Epic epic = EpicLogic.FindEpicById(id);
+        return epic.Title;
+    }
+
+    private int? SetEpic()
+    {
+        if (epicId is not null) return epicId;
+        if (_task.Epic is not null) return _task.Epic.Id;
+        return null;
+   
+    }
+    
+}

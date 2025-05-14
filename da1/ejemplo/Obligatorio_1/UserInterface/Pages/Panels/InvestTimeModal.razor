@@ -1,0 +1,77 @@
+@page "/InvestTimeModal"
+@using Domain
+@using Logic
+@inject PanelLogic PanelLogic
+@inject PanelTaskLogic PanelTaskLogic
+
+<div class="modal" style="display:@(_showModal ? "flex" : "none")">
+    <div class="modal-content">
+        <span class="close" @onclick="CloseModal">&times;</span>
+        <h2>Invest time in task</h2>
+        <EditForm Model="@_task" OnValidSubmit="InvestTime" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="time">Time:</label>
+                <input type="number" id="time" name="time" min="0" max="100" @bind="@_time">
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+        </EditForm>
+        <div class="success-message">@_successMessage</div>
+        <div class="error-message">@_errorMessage</div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Func<Task> GetVisibleTasks { get; set; }
+    
+    private bool _showModal = false;
+    private PanelTask _task = new PanelTask(new DateTimeProvider());
+    private int _time;
+    private string _successMessage = string.Empty;
+    private string _errorMessage = string.Empty;
+    
+    public void ShowModal(PanelTask task)
+    {
+        try
+        {
+            _task = task;
+            _showModal = true;
+            _successMessage = string.Empty;
+            _errorMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+            _showModal = false;
+        }
+        StateHasChanged();
+    }
+
+    private void CloseModal()
+    {
+        _time = 0;
+        _showModal = false;
+    }
+
+    private async Task InvestTime()
+    {
+        try
+        {
+            PanelTaskLogic.InvestTime(_task, _time);
+            _successMessage = "Time invested successfully";
+            _errorMessage = string.Empty;
+
+            if (GetVisibleTasks != null)
+            {
+                await GetVisibleTasks.Invoke();
+            }
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+            _successMessage = string.Empty;
+        }
+    }
+}

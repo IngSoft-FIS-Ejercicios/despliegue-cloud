@@ -1,0 +1,126 @@
+﻿@page "/Comments"
+@using Logic
+@using Domain
+@inject NavigationManager Navigation
+@inject TeamLogic TeamLogic
+@inject PanelLogic PanelLogic
+@inject PanelTaskLogic PanelTaskLogic
+@inject SessionLogic SessionLogic
+@inject UserLogic UserLogic
+
+<div class="base">
+    <div class="title-container">
+        <h1>Comments of @_task.Title</h1>
+        <button class="add-button" @onclick="NavigateToAdd"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    @if (_task.commentList.Count > 0)
+    { 
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+
+                    <th>Description</th>
+                    <th>Resolved</th>
+                    <th>Date Of Resolution</th>
+                    <th>Resolver</th>
+                    <th>Mark As Resolved</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var comment in _task.commentList)
+                {
+                    <tr>
+                        <td>@comment.Description</td>
+                        <td>@(comment.Resolved ? "Yes" : "No")</td>
+                        <td>@CheckDate(comment.DateResolution)</td>
+                        <td>@CheckUser(comment.ResolverId)</td>
+                        <td><button @onclick="() => ResolveComment(comment, SessionLogic.GetCurrentUser())">Resolve</button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    <div class="error-message">@_errorMessage</div>
+    }
+    else
+    {
+    <p class="empty">There are 0 comments</p>
+    }
+</div>
+
+@code {
+
+    [Parameter, SupplyParameterFromQuery]
+    public int taskId { get; set; }
+    
+    [Parameter, SupplyParameterFromQuery]
+    public int panelId { get; set; }
+
+    private PanelTask? _task;
+    private String _errorMessage = String.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (taskId != null)
+        {
+            _task = PanelLogic.findTaskById(taskId);
+        }
+    }
+
+    private void ResolveComment(Comment comment, User user)
+    {
+        try
+        {
+            PanelTaskLogic.ResolveComment(comment, user);
+            User actualUser = SessionLogic.GetCurrentUser();
+            User creator = UserLogic.GetUserById(comment.CreatorId);
+            if (comment.CreatorId != actualUser.Id)
+            {
+                Notification notification = new Notification()
+                {
+                    UserId = creator.Id,
+                    Message = $"Tu comentario {comment.Description} fue resuelto el {comment.DateResolution} por {user.ToString()}"
+                };
+                UserLogic.AddNotification(creator, notification);
+            }
+            StateHasChanged();
+            _errorMessage = String.Empty;
+        }
+        catch(Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+    
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo($"/AddComment?taskId={taskId}&panelId={panelId}");
+    }
+
+    private string CheckUser(int? userid)
+    {
+        if (userid == null)
+        {
+            return "Not resolved";
+        }
+        else
+        {
+            return UserLogic.GetUserById(userid).ToString();
+        }
+    }
+
+    private string CheckDate(DateTime? date)
+    {
+        if (date == null)
+        {
+            return "Not resolved";
+        }
+        else
+        {
+            return date.Value.ToString("dd/MM/yyyy");
+        }
+    }
+    
+}

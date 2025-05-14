@@ -1,0 +1,71 @@
+﻿@page "/AddEpic"
+@using Domain
+@using Logic
+@inject EpicLogic EpicLogic
+@inject NavigationManager NavigationManager
+
+<div class="base">
+    <div class="form-container">
+        <h1>Add Epic</h1>
+        <EditForm Model="@_epic" OnValidSubmit="Add" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="title">Title</label>
+                <input placeholder="Title" id="title" @bind="_title" required />
+            </div>
+            <div>
+                <label for="priority">Priority</label>
+                <select id="priority" @bind="_priority" required>
+                    <option value="" disabled selected>Select a priority</option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <input placeholder="Description" id="description" @bind="_description" required />
+            </div>
+            <div>
+                <label for="dueDate">Due Date</label>
+                <input type="date"  id="dueDate" min="@_minDate" @bind="_dueDate" required/>
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+            <div class="error-message">@_errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Epic _epic = new Epic(new DateTimeProvider());
+    private string _title = "";
+    private string _priority = "Low";
+    private string _description = "";
+    private DateTime _dueDate;
+    private string _minDate = DateTime.Now.ToString("yyyy-MM-dd");
+
+    private string _errorMessage = string.Empty;
+
+    private void Add()
+    {
+        try
+        {
+            _epic = new Epic(new DateTimeProvider())
+                {
+                    Title = _title,
+                    Priority = _priority,
+                    Description = _description,
+                    DueDate = _dueDate
+                };
+            EpicLogic.CreateEpic(_epic);
+
+            NavigationManager.NavigateTo("/");
+
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

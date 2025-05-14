@@ -1,0 +1,65 @@
+@page "/Profile"
+@using Domain
+
+@inject NavigationManager navigationManager
+@inject SessionLogic sessionLogic
+
+<div class="base">
+    <div class="profile-container">
+        <div class="profile-text">
+            <h1>Profile</h1>
+        </div>
+        @if (isLoading)
+        {
+            <p>Loading profile...</p>
+        }
+        else
+        {
+            <div class="profile-data">
+                <div>
+                    <h3>Name</h3>
+                    <p>@_user.Name</p>
+                </div>
+                <div>
+                    <h3>Surname</h3>
+                    <p>@_user.Surname</p>
+                </div>
+                <div>
+                    <h3>Email</h3>
+                    <p>@_user.Email</p>
+                </div>
+                <div>
+                    <h3>Type</h3>
+                    <p>@_user.Type.ToString()</p>
+                </div>
+                <div>
+                    <h3>Birth Date</h3>
+                    <p>@_user.BirthDate.ToString("dd/MM/yyyy")</p>
+                </div>
+                <button @onclick="Edit">Edit</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private User _user;
+    private bool isLoading = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await sessionLogic.InitializeAsync();
+            _user = sessionLogic.GetCurrentUser();
+            isLoading = false;
+            StateHasChanged(); // Notificar al componente que los datos están listos
+        }
+    }
+
+    private void Edit()
+    {
+        // Redirigir a la página de edición del usuario
+        navigationManager.NavigateTo($"/EditUser?userId={_user.Id}");
+    }
+}

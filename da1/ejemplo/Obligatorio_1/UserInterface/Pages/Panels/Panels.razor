@@ -1,0 +1,109 @@
+﻿@page "/Panels"
+@using Logic
+@using Domain
+@using Repository
+@inject TeamLogic TeamLogic
+@inject PanelLogic PanelLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager Navigation
+
+<div class="base">
+    <div class="title-container">
+        <h1>Panel List</h1>
+        <button class="add-button" @onclick="NavigateToAdd"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    @if (_isLoading)
+    {
+        <p class="loading-p">Loading panels...</p>
+    }
+    else if (_panelList.Count == 0 || !_panelList.Any(UserCanSee))
+    {
+        <p class="empty">No panel found</p>
+    }
+    else
+    {
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Team</th>
+                    <th>Tasks</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var panel in _panelList.Where(UserCanSee))
+                {
+                    <tr>
+                        <td>@panel.Id</td>
+                        <td>@panel.Name</td>
+                        <td>@panel.Description</td>
+                        <td>@panel.Team.TeamName</td>
+                        <td><button @onclick="() => NavigateToTasks(panel)">See Tasks</button></td>
+                        <td><button @onclick="() => NavigateToEdit(panel)">Edit</button></td>
+                        <td><button @onclick="() => RemovePanel(panel)">Delete</button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            </div>
+    }
+    <div class="error-message">@_errorMessage</div>
+</div>
+
+@code {
+    private List<Panel> _panelList = new List<Panel>();
+    private string _errorMessage = string.Empty;
+    private bool _isLoading = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SessionLogic.InitializeAsync();
+            _panelList = PanelLogic.GetPanels();
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+    
+    private void NavigateToTasks(Panel panel)
+    {
+        Navigation.NavigateTo($"/Tasks?panelId={panel.Id}");
+    }
+    
+    private void NavigateToEdit(Panel panel)
+    {
+        Navigation.NavigateTo($"/EditPanel?panelId={panel.Id}");
+    }
+    
+    private void RemovePanel(Panel panel)
+    {
+        try
+        {
+            PanelLogic.RemovePanel(SessionLogic.GetCurrentUser(), panel);
+            _panelList = PanelLogic.GetPanels();
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+
+    private bool UserCanSee(Panel panel)
+    {
+        var currentUser = SessionLogic.GetCurrentUser();
+        return currentUser != null 
+            && panel.Team != null 
+            && (panel.Team.TeamUsersList.Any(u => u.Id == currentUser.Id) || currentUser.Type.ToString() == "Admin");
+    }
+    
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo("/AddPanel");
+    }
+}

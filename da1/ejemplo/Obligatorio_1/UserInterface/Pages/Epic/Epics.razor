@@ -1,0 +1,112 @@
+@page "/Epics"
+@using Logic
+@using Domain
+@using Repository
+@inject TeamLogic TeamLogic
+@inject EpicLogic EpicLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager Navigation
+
+<div class="base">
+    <div class="title-container">
+        <h1>Epic List</h1>
+        <button class="add-button" @onclick="NavigateToAdd"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    @if (isLoading)
+    {
+        <p class="loading-p">Loading epics...</p>
+    }
+    else if (_epicList.Count == 0)
+    {
+        <p class="empty">No epic found</p>
+    }
+    else
+    {
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Edit</th>
+                    <th>View tasks</th>
+                    <th>Report</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var epic in _epicList)
+                {
+                    <tr>
+                        <td>@epic.Id</td>
+                        <td>@epic.Title</td>
+                        <td>@epic.Description</td>
+                        <td>@epic.Priority</td>
+                        <td>@epic.DueDate.ToString("dd/MM/yyyy")</td>
+                        <td><button @onclick="() => NavigateToEdit(epic)">Edit</button></td>
+                        <td><button @onclick="() => NavigateToTasks(epic)">Tasks</button></td>
+                        <td><button @onclick="() => NavigateToReport(epic)">Get analysis</button></td>
+                        <td><button @onclick="() => RemoveEpic(epic)">Delete</button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            </div>
+    }
+    <div class="error-message">@errorMessage</div>
+</div>
+
+@code {
+    private List<Epic> _epicList = new List<Epic>();
+    private string errorMessage = string.Empty;
+    private bool isLoading = true;
+    
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SessionLogic.InitializeAsync();
+            _epicList = EpicLogic.GetAllEpics();
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+    
+    private void NavigateToReport(Epic epic)
+    {
+        Navigation.NavigateTo($"/EpicGraphicReport?EpicId={epic.Id}");
+    }
+    
+    private void RemoveEpic(Epic epic)
+    {
+        try
+        {
+            EpicLogic.RemoveEpic(epic);
+            _epicList = EpicLogic.GetAllEpics();
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+    
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo("/AddEpic");
+    }
+
+    private void NavigateToTasks(Epic epic)
+    {
+        Navigation.NavigateTo($"/Tasks?epicId={epic.Id}");
+    }
+
+    private void NavigateToEdit(Epic epic)
+    {
+        Navigation.NavigateTo($"/EditEpic?epicId={epic.Id}");
+    }
+}

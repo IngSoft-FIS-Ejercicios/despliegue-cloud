@@ -1,0 +1,191 @@
+﻿@page "/Tasks"
+@using System.Globalization
+@using Logic
+@using Domain
+@inject NavigationManager Navigation
+@inject TeamLogic TeamLogic
+@inject PanelLogic PanelLogic
+@inject SessionLogic SessionLogic
+@inject TrashpaperLogic TrashpaperLogic
+@inject EpicLogic EpicLogic
+@inject PanelTaskLogic PanelTaskLogic
+
+<div class="base">
+    <div class="title-container">
+        <h1>@TitleCreator()</h1>
+        <button class="add-button" @onclick="NavigateToAdd"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <InvestTimeModal @ref="_investTimeModal" GetVisibleTasks="GetVisibleTasks"></InvestTimeModal>
+    @if (_visibleTasks.Any())
+    {
+        <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Priority</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>State</th>
+                <th>Estimated time</th>
+                <th>Invested time</th>
+                <th>Invest Time</th>
+                <th>Complete</th>
+                <th>Comments</th>
+                <th>Edit</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var task in _visibleTasks)
+            {
+                <tr>
+                    <td>@task.Title</td>
+                    <td>@task.Priority</td>
+                    <td>@task.Description</td>
+                    <td>@task.DueDate.ToString("dd/MM/yyyy")</td>
+                    <td>@task.State</td>
+                    <td>@task.EstimatedTime</td>
+                    <td>@task.InvestedTime</td>
+                    <td><button @onclick="() => MarkAsDone(task)">Mark as done</button></td>
+                    <td><button @onclick="() => ShowInvestModal(task)">Invest Time</button></td>
+                    <td><button @onclick="() => NavigateToComments(task)">See Comments</button></td>
+                    <td><button @onclick="() => NavigateToEdit(task)">Edit</button></td>
+                    <td><button @onclick="() => RemoveTask(task)">Remove</button></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        </div>
+    }
+    else
+    {
+        <p class="empty">No tasks found</p>
+    }
+    <div class="error-message">@_errorMessage</div>
+</div>
+
+
+@code {
+    [Parameter, SupplyParameterFromQuery]
+    public int? panelId { get; set; }
+    [Parameter, SupplyParameterFromQuery]
+    public int? epicId { get; set; }
+
+    private Panel? _panel;
+    private Epic? epic;
+    public InvestTimeModal _investTimeModal;
+    private List<PanelTask> _visibleTasks = new List<PanelTask>();
+    private string _errorMessage = string.Empty;
+    private bool _isInitialized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (panelId != null)
+        {
+            _panel = PanelLogic.findPanelById(panelId);
+        }
+        else
+        {
+            epic = EpicLogic.FindEpicById(epicId);
+        }
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_isInitialized)
+        {
+            _isInitialized = true;
+            await GetVisibleTasks(); // Safe to call JavaScript interop or async methods here.
+            PanelLogic.CheckExpiredTasks();
+        }
+    }
+    
+    private async Task GetVisibleTasks()
+    {
+        await SessionLogic.InitializeAsync();
+        var currentUser = SessionLogic.GetCurrentUser();
+
+        if (panelId != null)
+        {
+            _visibleTasks = _panel.PanelTaskList
+                .Where(task => IsNotOutdated(task) && IsNotInTrashpaper(task))
+                .ToList();
+        }
+        else
+        {
+            List<PanelTask> tasks = PanelLogic.GetAccessibleTasks(currentUser);
+            _visibleTasks = tasks
+                .Where(task => IsFromEpic(task.Epic) && IsNotOutdated(task) && IsNotInTrashpaper(task))
+                .ToList();
+        }
+        StateHasChanged();
+    }
+
+    private void NavigateToComments(PanelTask task)
+    {
+        Navigation.NavigateTo($"/Comments?taskId={task.Id}");
+    }
+    
+    private void NavigateToEdit(PanelTask task)
+    {
+        if(panelId is null) Navigation.NavigateTo($"/EditTask?taskId={task.Id}&epicId={epicId}");
+        else Navigation.NavigateTo($"/EditTask?taskId={task.Id}&panelId={panelId}");
+    }
+
+    private async Task RemoveTask(PanelTask task)
+    {
+        try
+        {
+            Trashpaper trashpaper = TrashpaperLogic.GetTrashpaper(SessionLogic.GetCurrentUser().Id);
+            TrashpaperLogic.MoveToTrashpaper(trashpaper, task);
+            _errorMessage = string.Empty;
+            await GetVisibleTasks();
+        }
+        catch (Exception e)
+        {
+            await GetVisibleTasks();
+            _errorMessage = e.Message;                                
+        }
+    }
+    
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo($"/AddTask?panelId={panelId}");
+    }
+
+    private bool IsNotOutdated(PanelTask task)
+    {
+        return task.DueDate > DateTime.Now;
+    }
+    
+    private bool IsNotInTrashpaper(PanelTask task)
+    {
+        return task.UserTrashpaperId == null;
+    }
+    
+    private void ShowInvestModal(PanelTask task)
+    {
+        _investTimeModal.ShowModal(task);
+    }
+
+    private string TitleCreator()
+    {
+        if (epicId is not null)
+        {
+            return "Tasks of " + EpicLogic.FindEpicById(epicId).Title;
+        }
+        return "Tasks of " + _panel.Name;
+    }
+
+    private bool IsFromEpic(Epic epic)
+    {
+        if (epic is null) return false;
+        return epic.Id == epicId;
+    }
+
+    private void MarkAsDone(PanelTask task)
+    {
+        PanelTaskLogic.MarkAsDone(task);
+    }
+}

@@ -1,0 +1,87 @@
+@page "/AddTeam"
+@using Domain
+@using Logic
+
+@inject UserLogic UserLogic
+@inject TeamLogic TeamLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
+
+<div class="base">
+    <div class="form-container">
+        <h1>Add Team</h1>
+        <EditForm Model="@_newTeam" OnValidSubmit="AddTeam" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="name">Name</label>
+                <input placeholder="Name" id="name" @bind="_newName" required/>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <input placeholder="Description" id="description" @bind="_newDescription" required/>
+            </div>
+            <div>
+                <label for="creator">Creator</label>
+                <select id="creator" @bind="_newAdminId">
+                    <option value="" disabled selected>Select a creator</option>
+                    @foreach (var user in UserLogic.GetAll())
+                    {
+                        <option value="@user.Id">@user.ToString()</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label for="max-users">Max users</label>
+                <input placeholder="Max users" id="max-users" @bind="_newMaxUsers" type="number" min="0" max="50" required/>
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+            <div class="error-message">@_errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Team _newTeam = new Team();
+    
+    private string _newName;
+    private string _newDescription;
+    private int _newMaxUsers;
+    private int? _newAdminId;
+    private string _newCreationDate = DateTime.Now.ToString("dd/MM/yyyy");
+    
+    private string _errorMessage = string.Empty;
+
+    private void AddTeam()
+    {
+        try
+        {
+
+            User newAdmin = UserLogic.GetUserById(_newAdminId);
+            
+            _newTeam = new Team()
+            {
+                TeamName = _newName,
+                TeamCreationDate = _newCreationDate,
+                TaskDescription = _newDescription,
+                MaxUsersAllowed = _newMaxUsers,
+                Administrator = newAdmin,
+            };
+            
+            var teamAdded = TeamLogic.CreateTeam(SessionLogic.GetCurrentUser(), _newTeam);
+            TeamLogic.AddMember(teamAdded.Id, SessionLogic.GetCurrentUser(), newAdmin);
+            
+            NavigationManager.NavigateTo("/Teams");
+            
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+
+    private string showUsers(User user)
+    {
+        return user.Name + " " + user.Surname;
+    }
+}

@@ -1,0 +1,88 @@
+@page "/Trashpaper"
+@using Domain
+@using Logic
+@inject SessionLogic SessionLogic
+@inject PanelLogic PanelLogic
+@inject TrashpaperLogic TrashpaperLogic
+
+<div class="base">
+    <div class="title-container">
+        <h1>Trashpaper of @actualUser?.Name</h1>
+    </div>
+    @if (isLoading)
+    {
+        <p class="loading-p">Loading...</p>
+    }
+    else if (trashTasks.Count == 0)
+    {
+        <p class="empty">Trashpaper is empty</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Priority</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Recover</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var task in trashTasks)
+            {
+                <tr>
+                    <td>@task.Title</td>
+                    <td>@task.Priority</td>
+                    <td>@task.Description</td>
+                    <td>@task.DueDate.ToString("dd/MM/yyyy")</td>
+                    <td><button class="btn-recover" @onclick="() => { RecoverTask(task); }">Recover</button></td>
+                    <td><button @onclick="() => { RemoveTask(task); }">Delete</button></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private User actualUser;
+    private List<PanelTask> trashTasks = new List<PanelTask>();
+    private bool isLoading = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SessionLogic.InitializeAsync();
+            actualUser = SessionLogic.GetCurrentUser();
+            trashTasks = TrashpaperLogic.GetTasks(actualUser);
+            isLoading = false;
+            StateHasChanged();
+        }
+        else
+        {
+            trashTasks = TrashpaperLogic.GetTasks(actualUser);
+            StateHasChanged();
+        }
+        
+    }
+
+    private void RecoverTask(PanelTask task)
+    {
+        Domain.Trashpaper trashpaper = TrashpaperLogic.GetTrashpaper(actualUser.Id);
+        TrashpaperLogic.RecoverFromTrashpaper(trashpaper, task);
+        trashTasks = TrashpaperLogic.GetTasks(actualUser);
+        StateHasChanged();
+    }
+
+    private void RemoveTask(PanelTask task)
+    {
+        Domain.Trashpaper trashpaper = TrashpaperLogic.GetTrashpaper(actualUser.Id);
+        TrashpaperLogic.RemoveFromTrashpaper(trashpaper, task);
+        trashTasks = TrashpaperLogic.GetTasks(actualUser);
+        StateHasChanged();
+    }
+}

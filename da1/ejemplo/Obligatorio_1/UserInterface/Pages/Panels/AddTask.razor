@@ -1,0 +1,103 @@
+@page "/AddTask"
+@using System.Globalization
+@using Domain
+@using Logic
+@using Radzen
+@using Radzen.Blazor
+
+@inject PanelLogic PanelLogic
+@inject NavigationManager Navigation
+@inject EpicLogic EpicLogic
+
+
+<div class="base">
+    <div class="form-container">
+        <h1>Add Task</h1>
+        <EditForm Model="@_task" OnValidSubmit="Add" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="title">Title</label>
+                <input placeholder="title" id="title" @bind="_title" required/>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <input placeholder="Description" id="description" @bind="_desc" required/>
+            </div>
+            <div>
+                <label for="priority">Priority</label>
+                <select id="priority" @bind="_priority">
+                    <option value="" disabled selected>Select a priority</option>
+                    <option value="Urgent" >Urgent</option>
+                    <option value="Medium" >Medium</option>
+                    <option value="Low" >Low</option>
+                </select>
+            </div>
+            <div>
+                <label for="dueDate">Due Date</label>
+                <input type="date"  id="dueDate" min="@minDate" @bind="_date" required/>
+            </div>
+            <div>
+                <label for="estTime">Estimated Time</label>
+                <input type="number" min="0"  id="estTime" @bind="@_estTime" required/>
+            </div>
+            <div>
+                <label for="epic">Epic</label>
+                <select id="epic" @bind="_idEpic">
+                    <option value="" disabled selected>Select an epic</option>
+                    @foreach (var epic in EpicLogic.GetAllEpics())
+                    {
+                        <option value="@epic.Id">@epic.Title</option>
+                    }
+                </select>
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+            <div class="error-message">@errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    [Parameter, SupplyParameterFromQuery]
+    public int panelId { get; set; }
+
+    private PanelTask _task = new PanelTask(new DateTimeProvider());
+    private string _title;
+    private string _priority;
+    private string _desc;
+    private int _estTime;
+    private int? _idEpic;
+    public string minDate = DateTime.Now.ToString("yyyy-MM-dd");
+    DateTime _date;
+
+    private string errorMessage = string.Empty;
+
+    private void Add()
+    {
+        try
+        {
+            IDateTimeProvider dateTimeProvider = new DateTimeProvider();
+            _task = new PanelTask(dateTimeProvider)
+            {
+                Title = _title,
+                Priority = _priority,
+                Description = _desc,
+                DueDate = _date,
+                Epic = EpicLogic.FindEpicById(_idEpic),
+                EstimatedTime = _estTime,
+                commentList = {}
+            };
+            Panel panel = PanelLogic.findPanelById(panelId);
+            PanelLogic.CreateTask(panel, _task);
+            Navigation.NavigateTo($"/Tasks?panelId={panelId}");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+    
+    
+    
+}

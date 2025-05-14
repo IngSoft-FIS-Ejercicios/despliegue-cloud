@@ -1,0 +1,63 @@
+@page "/AddMember"
+@using Domain
+@using Logic
+
+@inject TeamLogic TeamLogic
+@inject UserLogic UserLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
+
+<div class="base">
+    <div class="form-container">
+        <h1>Add Member</h1>
+        <EditForm Model="@team" OnValidSubmit="Add" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <select id="user" @bind="userId">
+                    <option value="" disabled selected>Select a new member</option>
+                    @foreach (var user in UserLogic.GetAll())
+                    {
+                        <option value="@user.Id">@user.ToString()</option>
+                    }
+                </select>
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+            <div class="error-message">@errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    Team team = new Team();
+    int? userId;
+    
+    private string errorMessage = string.Empty;
+
+    [Parameter, SupplyParameterFromQuery]
+    public int teamId { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        if (teamId != null)
+        {
+            team = TeamLogic.FindTeamById(teamId);
+        }
+    }
+
+    private void Add()
+    {
+        try
+        {
+            User user = UserLogic.GetUserById(userId);
+            TeamLogic.AddMember(team.Id, SessionLogic.GetCurrentUser(), user);
+            StateHasChanged();
+            NavigationManager.NavigateTo($"/Members?teamId={team.Id}");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+}

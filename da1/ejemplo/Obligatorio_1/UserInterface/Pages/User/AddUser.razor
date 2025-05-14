@@ -1,0 +1,122 @@
+@page "/AddUser"
+@using Domain
+@using Logic
+@inject UserLogic UserLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager NavigationManager
+@inject TrashpaperLogic TrashpaperLogic
+
+<div class="base">
+    <div class="form-container">
+        <h1>Add User</h1>
+        <EditForm Model="@newUser" OnValidSubmit="Add" class="formEdit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div>
+                <label for="name">Name</label>
+                <input placeholder="Name" id="name" @bind="newName" required/>
+            </div>
+            <div>
+                <label for="surname">Surname</label>
+                <input placeholder="Surname" id="surname" @bind="newSurname" required/>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input placeholder="Email" id="email" @bind="newEmail" required/>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input placeholder="password" id="password" type="password" @bind="newPassword" required/>
+            </div>
+            <div>
+                <label for="type">Type</label>
+                <select id="type" @bind="newTypeString">
+                    <option value="" disabled selected>Select a type</option>
+                    <option value="Admin">Admin</option>
+                    <option value="User">User</option>
+                </select>
+            </div>
+            <div>
+                <label for="dueDate">Birth Date</label>
+                <input type="date"  id="dueDate" max="@maxDate" @bind="birthDate" required/>
+            </div>
+            <input type="submit" value="Add" id="edit-submit">
+            <div class="error-message">@errorMessage</div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private User newUser = new User();
+    private Domain.Trashpaper newTrashpaper;
+    private string newName;
+    private string newSurname;
+    private string newEmail;
+    private string newPassword;
+    private string? newTypeString;
+    private TypeUser newType;
+    private DateTime birthDate;
+    public string maxDate;
+    
+    
+    protected override void OnInitialized()
+    {
+        birthDate = DateTime.Now;
+        maxDate = DateTime.Now.ToString("yyyy-MM-dd");
+    }
+    
+    private string errorMessage = string.Empty;
+
+    private void Add()
+    {
+        try
+        {
+            ManageType();
+            CreateUser();
+            UserLogic.AddUser(SessionLogic.GetCurrentUser(), newUser);
+            CreateTrashpaper();
+            TrashpaperLogic.Add(newTrashpaper);
+            errorMessage = string.Empty;
+            NavigationManager.NavigateTo("");
+            
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+            
+        }
+    }
+
+    private void CreateUser()
+    {
+        newUser = new User()
+        {
+            Name = newName,
+            Surname = newSurname,
+            Email = newEmail,
+            Password = newPassword,
+            Type = newType,
+            BirthDate = birthDate,
+            Trashpaper = { }
+        };
+    }
+    
+    private void ManageType()
+    {
+        if (newTypeString == "" || newTypeString == null)
+        {
+            throw new ArgumentException("User must have a type");
+        }
+        newType = (newTypeString == "Admin") ? TypeUser.Admin : TypeUser.User;
+    }
+    
+    private void CreateTrashpaper()
+    {
+        User user = UserLogic.GetUserByEmail(newEmail);
+        newTrashpaper = new Domain.Trashpaper()
+        {
+            UserId = user.Id
+        };
+        
+    }
+}

@@ -1,0 +1,125 @@
+@page "/Teams"
+@using Logic
+@using Domain 
+@inject TeamLogic TeamLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager Navigation
+@inject PanelLogic PanelLogic
+@inject UserLogic UserLogic
+
+<div class="base">
+    <div class="title-container">
+        <h1>Teams List</h1> 
+        <button class="add-button" @onclick="NavigateToAdd"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    @if (!_isDataLoaded)
+    {
+        <p class="loading-p">Loading teams...</p>
+    }
+    else if (_teamList.Count == 0)
+    {
+        <p class="empty">No team found</p>
+    }
+    else
+    {
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Leader</th>
+                    <th>Date Creation</th>
+                    <th>Capacity</th>
+                    <th>Members</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var team in _teamList)
+                {
+                    @if (UserCanSee(team))
+                    {
+                        <tr>
+                            <td>@team.TeamName</td>
+                            <td>@team.TaskDescription</td>
+                            <td>@GetAdministrator(team.AdministratorId).ToString()</td>
+                            <td>@team.TeamCreationDate</td>
+                            <td>@team.MaxUsersAllowed</td>
+                            <td><button @onclick="() => NavigateToMembers(team)">See members</button></td>
+                            <td><button @onclick="() => NavigateToEdit(team)">Edit</button></td>
+                            <td><button @onclick="() => RemoveTeam(team)">Delete</button></td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+            </div>
+    }
+    <div class="error-message">@_errorMessage</div>
+</div>
+
+@code {
+
+    private List<Team> _teamList = new List<Team>();
+    private bool _isDataLoaded = false;
+    private string _errorMessage = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SessionLogic.InitializeAsync();
+            _teamList = TeamLogic.GetTeams();
+            _isDataLoaded = true;
+            StateHasChanged(); 
+        }
+    }
+
+    private void NavigateToMembers(Team team)
+    {
+        Navigation.NavigateTo($"/Members?teamId={team.Id}");
+    }
+    
+    private void NavigateToEdit(Team team)
+    {
+        Navigation.NavigateTo($"/EditTeam?teamId={team.Id}");
+    }
+    
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo("/AddTeam");
+    }
+    
+    private void RemoveTeam(Team team)
+    {
+        try
+        {
+            TeamLogic.RemoveTeam(SessionLogic.GetCurrentUser(), team, PanelLogic);
+            _teamList = TeamLogic.GetTeams();
+            _errorMessage = null;
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+    
+    private bool UserCanSee(Team team)
+    {
+        var currentUser = SessionLogic.GetCurrentUser();
+        if (currentUser == null)
+        {
+            return false;
+        }
+
+        return team.TeamUsersList.Any(u => u.Id == currentUser.Id) || currentUser.Type.ToString() == "Admin";
+    }
+
+    private User GetAdministrator(int id)
+    {
+        return UserLogic.GetUserById(id);
+    }
+}

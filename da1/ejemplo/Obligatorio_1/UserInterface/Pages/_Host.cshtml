@@ -1,0 +1,29 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@namespace Interface.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+
+
+<script>
+    function getWindowWidth() {
+        return window.innerWidth;
+    }
+
+    let resizeTimeout;
+
+    function registerResizeCallback(dotNetObject) {
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                dotNetObject.invokeMethodAsync("OnWindowResize", width, height);
+            }, 100); 
+        });
+    }
+</script>
+<component type="typeof(App)" render-mode="ServerPrerendered"/>

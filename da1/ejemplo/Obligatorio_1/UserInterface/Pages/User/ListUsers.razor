@@ -1,0 +1,62 @@
+@page "/ListUsers"
+
+@using Logic
+@using Domain
+@inject UserLogic UserLogic
+@inject NavigationManager Navigation
+@inject SessionLogic SessionLogic
+
+<div class="base">
+    <div class="title-container">
+        <h1>User List</h1>
+    </div>
+    @if(UserLogic.IsEmpty())
+    {
+    <p class="empty">No users found</p>
+    }
+    else
+    {
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Type</th>
+            <th>Email</th>
+            <th>Birthdate</th>
+            <th>Password</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in _userList)
+        {
+        <tr>
+            <td>@user.Name</td>
+            <td>@user.Surname</td>
+            <td>@user.Type.ToString()</td>
+            <td>@user.Email</td>
+            <td>@user.BirthDate.ToString("dd/MM/yyyy")</td>
+            <td>@user.Password</td>
+            <td><button @onclick="() => NavigateToEdit(user)">Edit</button></td>
+        </tr>
+        }
+        </tbody>
+    </table>
+    }
+</div>
+
+@code {
+
+    private List<User> _userList;
+
+    protected override void OnInitialized()
+    {
+        _userList = UserLogic.GetAll();
+    }
+    
+    private void NavigateToEdit(User user)
+    {
+        Navigation.NavigateTo($"/EditUser?userId={user.Id}");
+    }
+}

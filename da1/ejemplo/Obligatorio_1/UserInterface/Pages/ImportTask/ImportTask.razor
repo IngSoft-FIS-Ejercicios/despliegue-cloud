@@ -1,0 +1,98 @@
+﻿@page "/ImportTask"
+@using Logic
+@inject SessionLogic SessionLogic
+@inject ImportLogic ImportLogic
+
+<div class="base"> 
+    <h1>Import Tasks</h1>
+    
+    <i class="fas fa-file-upload file-icon"></i>
+    
+    <label class="custom-file-upload" aria-label="Upload a CSV file">
+        <InputFile OnChange="SelectFile" />
+        Choose File
+    </label>
+    
+    @if (IsFileSelected())
+    {
+        <button class="process-button" @onclick="ProcessImportFile">Process File</button>
+    }
+    @if (HasMessage())
+    {
+        <p class="success-message">@_message</p>
+    }
+    @if (HasError())
+    {
+        <div class="error-message">
+            <strong>Error:</strong> @_error
+        </div>
+    }
+</div>
+@code {
+    private string _message;
+    private string _error;
+    private InputFileChangeEventArgs? _fileChangeEventArgs;
+    private IBrowserFile? _selectedFile;
+
+    private bool IsFileSelected()
+    {
+        return _selectedFile != null;
+    }
+
+    private bool HasMessage()
+    {
+        return !string.IsNullOrEmpty(_message);
+    }
+
+    private bool HasError()
+    {
+        return !string.IsNullOrEmpty(_error);
+    }
+    
+    private void SetMessage(string message = null, string error = null)
+    {
+        _message = message;
+        _error = error;
+    }
+    
+    private bool IsValidFile()
+    {
+        if (_fileChangeEventArgs == null)
+        {
+            SetMessage(error: "No file was selected.");
+            return false;
+        }
+
+        if (!ImportLogic.IsAValidFormat(_fileChangeEventArgs.File.Name))
+        {
+            SetMessage(error: "The selected file is not on a valid format.");
+            return false;
+        }
+
+        _selectedFile = _fileChangeEventArgs.File;
+        SetMessage(message: "The file was selected successfully.");
+        return true;
+    }
+    
+    private void SelectFile(InputFileChangeEventArgs e)
+    {
+        _fileChangeEventArgs = e;
+        IsValidFile();
+    }
+    
+    private async Task ProcessImportFile()
+    {
+        if (!IsValidFile()) return;
+
+        await using var streamFile = _selectedFile.OpenReadStream();
+        ImportResult result = await ImportLogic.ProcessFile(SessionLogic.GetCurrentUser(), streamFile,_fileChangeEventArgs.File.Name);
+        SetMessage(result.Message, result.Error);
+        DeselectFiles();
+    }
+
+    private void DeselectFiles()
+    {
+        _fileChangeEventArgs = null;
+        _selectedFile = null;
+    }
+}

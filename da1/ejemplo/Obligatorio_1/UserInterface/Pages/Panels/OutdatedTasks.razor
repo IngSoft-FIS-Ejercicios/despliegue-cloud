@@ -1,0 +1,111 @@
+@page "/OutdatedTasks"
+@using Domain
+@using Logic
+@inject PanelLogic PanelLogic
+@inject TeamLogic TeamLogic
+@inject SessionLogic SessionLogic
+@inject NavigationManager Navigation
+
+<div class="base">
+    <div class="title-container">
+        <h1>Outdated tasks</h1>
+    </div>
+    @if (isLoading)
+    {
+        <p class="loading-p">Loading outdated tasks...</p>
+    }
+    else if (_tasksUserCanSee.Count == 0)
+    {
+        <p class="empty">No tasks found</p>
+    }
+    else
+    {
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                    <th>Estimated time</th>
+                    <th>Invested time</th>
+                    <th>Comments</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var task in _tasksUserCanSee)
+                {
+                    <tr>
+                        <td>@task.Title</td>
+                        <td>@task.Priority</td>
+                        <td>@task.Description</td>
+                        <td>@task.DueDate.ToString("dd/MM/yyyy")</td>
+                        <td>@task.State</td>
+                        <td>@task.EstimatedTime</td>
+                        <td>@task.InvestedTime</td>
+                        <td><button @onclick="() => NavigateToComments(task)">See Comments</button></td>
+                        <td><button @onclick="() => { ReactivateTask(task); }">Reactivate</button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            </div>
+    }
+    <div class="error-message">@_errorMessage</div>
+</div>
+
+@code {
+    private Panel _expiredPanel;
+    private List<PanelTask> _tasksUserCanSee = new List<PanelTask>();
+    private User _user;
+    private string _errorMessage = string.Empty;
+    public bool isLoading = true;
+    private const int OudatedTasksPanelId = 1;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SessionLogic.InitializeAsync();
+            _user = SessionLogic.GetCurrentUser();
+            PanelLogic.CheckExpiredTasks();
+            _expiredPanel = PanelLogic.findPanelById(OudatedTasksPanelId);
+            LoadTasks();
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void LoadTasks()
+    {
+        _tasksUserCanSee.Clear();  // Limpiar lista para evitar duplicados en caso de recargar
+        foreach (var panel in PanelLogic.GetPanels())
+        {
+            if ((panel.Id != OudatedTasksPanelId && panel.Team.TeamUsersList.Contains(_user)) || _user.Type.Equals(TypeUser.Admin))
+            {
+                _tasksUserCanSee.AddRange(panel.PanelTaskList.Where(task => _expiredPanel.PanelTaskList.Contains(task)));
+            }
+        }
+    }
+    
+    private void NavigateToComments(PanelTask task)
+    {
+        Navigation.NavigateTo($"/Comments?taskId={task.Id}");
+    }
+    
+    private void ReactivateTask(PanelTask task)
+    {
+        try
+        {
+            PanelLogic.ReactivateTask(_user, task);
+            LoadTasks();  // Recargar lista para reflejar el cambio
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+# Usa una imagen oficial de .NET para build y runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+ENV ASPNETCORE_ENVIRONMENT=Development
+
+# Etapa de build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copiar los proyectos
+COPY ./Domain/Domain.csproj Domain/
+COPY ./FileReaders/FileReaders.csproj FileReaders/
+COPY ./Interface/Interface.csproj Interface/
+COPY ./Services/Services.csproj Services/
+COPY ./Repository/Repository.csproj Repository/
+COPY ./IRepository/IRepository.csproj IRepository/
+COPY ./IServicesImport/IServicesImport.csproj IServicesImport/
+
+# Restaurar paquetes
+RUN dotnet restore Interface/Interface.csproj
+
+# Copiar el resto de los archivos
+COPY ./Domain/ Domain/
+COPY ./Interface/ Interface/
+COPY ./Services/ Services/
+COPY ./Repository/ Repository/
+COPY ./FileReaders/ FileReaders/
+COPY ./IRepository/ IRepository/
+COPY ./IServicesImport/ IServicesImport/
+
+WORKDIR /src/Interface
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish
+WORKDIR /src/Interface
+RUN dotnet publish Interface.csproj -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Interface.dll"]
