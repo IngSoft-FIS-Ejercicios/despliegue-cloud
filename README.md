@@ -11,8 +11,15 @@ Este proyecto tiene como objetivo abordar conceptos vinculados al despliegue con
 
 # DA1
 - [Ficha técnica DA1](./da1/ficha_tecnica_da1.md)
-- [Guía de despliegue Azure - Docente]()
-- [Guía de despliegue Azure - Estudiantes]()
-- [docker-compose]()
-- [dockerfile]()
+- [Guía de despliegue Azure - Estudiantes](./da1/guia_despliegue_da1_azure.md)
+- [Guía de despliegue Render - Estudiantes](./da1/guia_despliegue_da1_render.md)
+- [dockerfile](./da1/ejemplo/Obligatorio_1/dockerfile)
+- [Script de deploy - Azure](./da1/ejemplo/Obligatorio_1/deploy.sh)
+- [Guía de despliegue Azure - Script de deploy (interno)]()
+
+# DA2
+- [Ficha técnica DA2](./da2/ficha_tecnica_da2.md)
+- [Guía de despliegue Backend - DA2](./da2/guia_despliegue_backend_da2.md)
+- [Guía de despliegue Frontend - DA2](./da2/guia_despliegue_frontend_da2.md)
+- [dockerfile - backend](./da2/)
 
