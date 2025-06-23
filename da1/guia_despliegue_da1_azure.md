@@ -2,7 +2,7 @@
 
 ## Introducción:
 
-(Cloud Computing)[https://cloud.google.com/learn/what-is-cloud-computing?hl=es], o computación en la nube, es un modelo de entrega de servicios de computación (como servidores, almacenamiento, bases de datos, redes, software, etc.) a través de Internet. En lugar de instalar y mantener estos servicios en una computadora personal o servidor físico, se accede a ellos cuando se necesitan.
+[Cloud Computing](https://cloud.google.com/learn/what-is-cloud-computing?hl=es), o computación en la nube, es un modelo de entrega de servicios de computación (como servidores, almacenamiento, bases de datos, redes, software, etc.) a través de Internet. En lugar de instalar y mantener estos servicios en una computadora personal o servidor físico, se accede a ellos cuando se necesitan.
 
 ### Beneficios de usar la nube
 

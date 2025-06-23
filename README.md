@@ -18,8 +18,14 @@ Este proyecto tiene como objetivo abordar conceptos vinculados al despliegue con
 - [Guía de despliegue Azure - Script de deploy (interno)]()
 
 # DA2
-- [Ficha técnica DA2](./da2/ficha_tecnica_da2.md)
-- [Guía de despliegue Backend - DA2](./da2/guia_despliegue_backend_da2.md)
-- [Guía de despliegue Frontend - DA2](./da2/guia_despliegue_frontend_da2.md)
-- [Dockerfile - backend](./da2/ejemplo/Implementacion/Codigo/Backend/Dockerfile)
+- [Ficha técnica DA2](./da2-isa2/ficha_tecnica_da2.md)
+- [Guía de despliegue Backend - DA2](./da2-isa2/guia_despliegue_backend_da2.md)
+- [Guía de despliegue Frontend - DA2](./da2-isa2/guia_despliegue_frontend_da2.md)
+- [Dockerfile - backend](./da2-isa2/ejemplo/Implementacion/Codigo/Backend/Dockerfile)
+
+# DA2
+- [Ficha técnica ISA2](./da2-isa2/ficha_tecnica_isa2.md)
+- [Guía de despliegue Backend - ISA2](./da2-isa2/guia_despliegue_backend_da2.md)
+- [Guía de despliegue Frontend - ISA2](./da2-isa2/guia_despliegue_frontend_da2.md)
+- [Dockerfile - backend](./da2-isa2/ejemplo/Implementacion/Codigo/Backend/Dockerfile)
 
