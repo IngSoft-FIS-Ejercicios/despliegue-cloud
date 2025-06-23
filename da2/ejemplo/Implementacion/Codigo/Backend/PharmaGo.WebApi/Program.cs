@@ -1,6 +1,7 @@
 using PharmaGo.Factory;
 using PharmaGo.WebApi.Filters;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,12 @@ app.UseCors("MyAllowedOrigins");
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PharmaGo.DataAccess.PharmacyGoDbContext>();
+    db.Database.Migrate(); // Ejecuta las migraciones pendientes
+}
 
 app.Run();
 

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:9876',
+  apiUrl: 'https://pharmago-api.onrender.com',
 };
