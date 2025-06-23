@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+:root {
+  --purple-color: #6f42c1; 
+  --red-color: #dc3545;
+  --grey-color: #6c757d;
+  --pink-color: #e83e8c;
+}
+
+.customBody {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bottomFooter {
+  margin-top: auto;
+  width: 100%;
+}
+
+.bg-purple {
+  background-color: var(--purple-color) !important;
+}
+
+.bg-pink {
+  background-color: var(--pink-color) !important;
+}
+
+.text-purple {
+  color: var(--purple-color) !important;
+}
+
+.text-pink {
+  color: var(--pink-color) !important;
+}
+
+.error-message {
+  color: var(--red-color) !important;
+  margin-top: 0.5rem; 
+  font-size: 0.875rem;
+}
+
+.character-count {
+  right: 0px; 
+  top: calc(100% + 0.5rem); 
+  margin-top: 0;
+  font-size: 0.875rem; 
+  color: var(--grey-color); 
+}
+
+.text-danger {
+  color: var(--red-color) !important;
+}

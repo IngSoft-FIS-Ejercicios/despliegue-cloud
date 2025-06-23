@@ -1,0 +1,232 @@
+[
+  {
+    "keyword": "Feature",
+    "name": "Create drug",
+    "line": 1,
+    "id": "create-drug",
+    "tags": [],
+    "uri": "create-drug.feature",
+    "elements": [
+      {
+        "id": "create-drug;create-drug-successfully",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Create drug successfully",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 18000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 5,
+            "name": "I am in the create drug page \"http://localhost:4200/employee/create-drug\"",
+            "result": {
+              "status": "passed",
+              "duration": 597000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "I fill the code field with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 207000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I fill the name field with \"Paracetamol\"",
+            "result": {
+              "status": "passed",
+              "duration": 258000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "I fill the symptom field with \"Headache\"",
+            "result": {
+              "status": "passed",
+              "duration": 220000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "I fill the price field with \"100\"",
+            "result": {
+              "status": "passed",
+              "duration": 162000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I fill the quantity field with \"10\"",
+            "result": {
+              "status": "passed",
+              "duration": 150000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "the user clicks on the create button",
+            "result": {
+              "status": "passed",
+              "duration": 81000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the system should display a success message \"Success creating\"",
+            "result": {
+              "status": "passed",
+              "duration": 315000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-drug;get-drug-measures",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Get drug measures",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 15,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 30000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "I am in the create drug page \"http://localhost:4200/employee/create-drug\"",
+            "result": {
+              "status": "passed",
+              "duration": 720000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 17,
+            "name": "the user select the measures option",
+            "result": {
+              "status": "passed",
+              "duration": 160000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "the system should display the list of measures with its names",
+            "result": {
+              "status": "passed",
+              "duration": 16000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "the dropdown should allow the user to select \"Milligrams\" as measure",
+            "result": {
+              "status": "passed",
+              "duration": 124000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-drug;get-drug-presentations",
+        "keyword": "Scenario",
+        "line": 21,
+        "name": "Get drug presentations",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 22,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "I am in the create drug page \"http://localhost:4200/employee/create-drug\"",
+            "result": {
+              "status": "passed",
+              "duration": 625000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 24,
+            "name": "the user select the presentation option",
+            "result": {
+              "status": "passed",
+              "duration": 161000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 25,
+            "name": "the system should display the list of presentations with its names",
+            "result": {
+              "status": "passed",
+              "duration": 15000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "the dropdown should allow the user to select \"Capsule\" as presentation",
+            "result": {
+              "status": "passed",
+              "duration": 124000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,75 @@
+<app-user-header title="Employee" link="employee"></app-user-header>
+
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+        <c-row class="justify-content-center mt-3 mb-3">
+            <c-col lg="7" md="9" xl="6">
+                <c-card class="mx-4">
+                    <c-card-body class="p-4">
+                        <form cForm [formGroup]="form" id="create-cosmetic-form" class="customAlign">
+                            <h3>Create Cosmetic</h3>
+
+                            <c-input-group class="mb-3">
+                                <span cInputGroupText>
+                                    <svg cIcon [cIcon]="icons.cilBarcode"></svg>
+                                </span>
+                                <input type="text" pattern="\d*" maxlength="5" id="Code" placeholder="Code" cFormControl formControlName="code" autoComplete="off" />
+                            </c-input-group>
+                            <div *ngIf="form.get('code')?.hasError('invalidCode') && form.get('code')?.touched" class="error-message mb-3">
+                                Code must be 5 characters long and numeric.
+                            </div>
+
+                            <c-input-group class="mb-2">
+                                <span cInputGroupText>
+                                    <svg cIcon [cIcon]="icons.cilPencil"></svg>
+                                </span>
+                                <input type="text" id="Name" placeholder="Name" cFormControl formControlName="name"
+                                    autoComplete="off" (input)="updateNameCharCount()"/>
+                            </c-input-group>
+                            <div class="character-count text-end mb-2" 
+                                [ngClass]="{'text-danger': nameCharacterCount > 30}">
+                                {{ nameCharacterCount }}/30
+                            </div>
+
+                            <c-input-group class="mb-3">
+                                <span cInputGroupText>
+                                    <svg cIcon [cIcon]="icons.cilDollar"></svg>
+                                </span>
+                                <input type="number" id="Price" placeholder="Price" cFormControl formControlName="price"
+                                    autoComplete="off" />
+                            </c-input-group>
+                            <div *ngIf="form.get('price')?.hasError('invalidPrice') && form.get('price')?.touched" class="error-message mb-3">
+                                Price must be a positive number
+                              </div>
+                            <div *ngIf="!form.get('price')?.hasError('invalidPrice') && form.get('price')?.hasError('invalidFormat') && form.get('price')?.touched" class="error-message mb-3">
+                                Price must be a number with two decimal places
+                            </div>
+
+                            <div class="mb-2">
+                                <c-input-group>
+                                    <span cInputGroupText>
+                                        <svg cIcon [cIcon]="icons.cilAlignCenter"></svg>
+                                    </span>
+                                    <textarea id="Description" placeholder="Description" cFormControl
+                                        formControlName="description" autoComplete="off" 
+                                        (input)="updateDescriptionCharCount()"></textarea>
+                                </c-input-group>
+                                <div class="character-count text-end pt-2" 
+                                    [ngClass]="{'text-danger': descriptionCharacterCount > 70}">
+                                    {{ descriptionCharacterCount }}/70
+                                </div>
+                            </div>
+                    
+                            <div class="d-grid">
+                                <button type="button" id="create-cosmetic-button" class="customButton" cButton
+                                    color="primary" (click)="createCosmetic()" [disabled]="form.invalid">
+                                    Create Cosmetic
+                                </button>
+                            </div>
+                        </form>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+        </c-row>
+    </c-container>
+</div>

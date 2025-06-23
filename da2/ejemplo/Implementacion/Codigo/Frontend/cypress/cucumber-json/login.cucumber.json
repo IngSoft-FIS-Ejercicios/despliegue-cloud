@@ -1,0 +1,62 @@
+[
+  {
+    "keyword": "Feature",
+    "name": "Login",
+    "line": 1,
+    "id": "login",
+    "tags": [],
+    "uri": "login.feature",
+    "elements": [
+      {
+        "id": "login;navigate-to-login-page",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Navigate to login page",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am in the home page \"http://localhost:4200/home\"",
+            "result": {
+              "status": "passed",
+              "duration": 352000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 5,
+            "name": "I am not logged in as \"Luis\"",
+            "result": {
+              "status": "passed",
+              "duration": 11000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "I click the \"Login\" button",
+            "result": {
+              "status": "passed",
+              "duration": 100000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "I should be redirected to the login page \"http://localhost:4200/login\"",
+            "result": {
+              "status": "passed",
+              "duration": 175000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

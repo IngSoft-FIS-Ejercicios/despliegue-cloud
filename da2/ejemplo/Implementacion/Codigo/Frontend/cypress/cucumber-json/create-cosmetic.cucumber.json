@@ -1,0 +1,892 @@
+[
+  {
+    "keyword": "Feature",
+    "name": "Create cosmetic",
+    "line": 1,
+    "id": "create-cosmetic",
+    "tags": [],
+    "uri": "create-cosmetic.feature",
+    "elements": [
+      {
+        "id": "create-cosmetic;navigate-to-create-cosmetic-page",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Navigate to create cosmetic page",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 21000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 5,
+            "name": "I am in the \"Employee\" menu page \"http://localhost:4200/employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 494000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "I click the \"Create\" \"Cosmetic\" card",
+            "result": {
+              "status": "passed",
+              "duration": 90000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "I should be redirected to the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 430000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;user-can-not-create-a-cosmetic-with-empty-fields",
+        "keyword": "Scenario",
+        "line": 9,
+        "name": "User can not create a cosmetic with empty fields",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 10,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 17000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 420000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;successfully-create-a-cosmetic",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Successfully create a cosmetic",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 15,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 451000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 17,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 205000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 225000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "I fill in the field \"Price\" with \"99.99\"",
+            "result": {
+              "status": "passed",
+              "duration": 194000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 394000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "I click the \"Create Cosmetic\" button",
+            "result": {
+              "status": "passed",
+              "duration": 92000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 22,
+            "name": "I should see a success message \"Cosmetic created successfully\"",
+            "result": {
+              "status": "passed",
+              "duration": 6000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-invalid-code",
+        "keyword": "Scenario",
+        "line": 24,
+        "name": "Fail to create a cosmetic with invalid code",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 25,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 22000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 444000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 27,
+            "name": "I fill in the field \"Code\" with \"1236\"",
+            "result": {
+              "status": "passed",
+              "duration": 193000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 232000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "I fill in the field \"Price\" with \"100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 218000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 388000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 31,
+            "name": "I should see an error message \"Code must be 5 characters long\"",
+            "result": {
+              "status": "passed",
+              "duration": 8000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-invalid-name",
+        "keyword": "Scenario",
+        "line": 33,
+        "name": "Fail to create a cosmetic with invalid name",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 34,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 37000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 35,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 447000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 36,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 205000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "I fill in the field \"Name\" with \"Cosmetic123 Cosmetic123 Cosmetic123 Cosmetic123\"",
+            "result": {
+              "status": "passed",
+              "duration": 731000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 38,
+            "name": "I fill in the field \"Price\" with \"100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 229000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 39,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 393000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 40,
+            "name": "I should see the character limit \"30\" for \"Name\" in red",
+            "result": {
+              "status": "passed",
+              "duration": 20000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 41,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 3000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-invalid-price",
+        "keyword": "Scenario",
+        "line": 44,
+        "name": "Fail to create a cosmetic with invalid price",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 45,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 30000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 46,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 433000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 47,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 205000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 48,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 225000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 49,
+            "name": "I fill in the field \"Price\" with \"100.123\"",
+            "result": {
+              "status": "passed",
+              "duration": 228000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 50,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 412000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "I should see an error message \"Price must be a number with two decimal places\"",
+            "result": {
+              "status": "passed",
+              "duration": 10000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-invalid-description",
+        "keyword": "Scenario",
+        "line": 53,
+        "name": "Fail to create a cosmetic with invalid description",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 54,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 37000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 55,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 423000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 56,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 207000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 57,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 231000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 58,
+            "name": "I fill in the field \"Price\" with \"100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 221000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 59,
+            "name": "I fill in the field \"Description\" with \"Very long description for a cosmetic that should not be allowed to be created to test the validation of the description field\"",
+            "result": {
+              "status": "passed",
+              "duration": 1695000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 60,
+            "name": "I should see the character limit \"70\" for \"Description\" in red",
+            "result": {
+              "status": "passed",
+              "duration": 31000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 61,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 4000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-without-name",
+        "keyword": "Scenario",
+        "line": 63,
+        "name": "Fail to create a cosmetic without name",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 64,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 36000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 65,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 450000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 66,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 205000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 67,
+            "name": "I fill in the field \"Price\" with \"100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 206000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 379000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 69,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 3000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-without-price",
+        "keyword": "Scenario",
+        "line": 71,
+        "name": "Fail to create a cosmetic without price",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 72,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 26000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 73,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 404000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 74,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 205000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 75,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 231000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 76,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 392000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 77,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 5000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-empty-code",
+        "keyword": "Scenario",
+        "line": 79,
+        "name": "Fail to create a cosmetic with empty code",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 80,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 32000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 81,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 448000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 82,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 247000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 83,
+            "name": "I fill in the field \"Price\" with \"100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 212000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 84,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 404000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 85,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 5000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-empty-description",
+        "keyword": "Scenario",
+        "line": 87,
+        "name": "Fail to create a cosmetic with empty description",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 88,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 32000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 89,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 426000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 90,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 208000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 91,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 232000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 92,
+            "name": "I fill in the field \"Price\" with \"100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 217000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 93,
+            "name": "The \"Create Cosmetic\" button is disabled",
+            "result": {
+              "status": "passed",
+              "duration": 11000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "create-cosmetic;fail-to-create-a-cosmetic-with-negative-price",
+        "keyword": "Scenario",
+        "line": 95,
+        "name": "Fail to create a cosmetic with negative price",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 96,
+            "name": "I am logged in as an \"Employee\"",
+            "result": {
+              "status": "passed",
+              "duration": 40000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 97,
+            "name": "I visit the create cosmetic page \"http://localhost:4200/employee/create-cosmetic\" with \"Employee\" role",
+            "result": {
+              "status": "passed",
+              "duration": 455000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 98,
+            "name": "I fill in the field \"Code\" with \"12345\"",
+            "result": {
+              "status": "passed",
+              "duration": 206000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 99,
+            "name": "I fill in the field \"Name\" with \"Cosmetic\"",
+            "result": {
+              "status": "passed",
+              "duration": 227000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 100,
+            "name": "I fill in the field \"Price\" with \"-100.00\"",
+            "result": {
+              "status": "passed",
+              "duration": 226000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 101,
+            "name": "I fill in the field \"Description\" with \"Cosmetic description\"",
+            "result": {
+              "status": "passed",
+              "duration": 372000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 102,
+            "name": "I should see an error message \"Price must be a positive number\"",
+            "result": {
+              "status": "passed",
+              "duration": 12000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

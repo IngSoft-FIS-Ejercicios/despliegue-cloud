@@ -1,0 +1,74 @@
+<body>
+  <app-user-header title="Employee" link="employee"></app-user-header>
+
+  <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+      <c-row class="justify-content-center mt-3 mb-3">
+        <c-col lg="7" md="9" xl="6">
+          <c-card class="mx-4">
+            <c-card-body class="p-4">
+              <form [formGroup]="form" id="apply-discount-form" (ngSubmit)="applyDiscount()" class="customAlign">
+                <h3>Apply Discount</h3>
+
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon [cIcon]="icons.cilDollar"></svg>
+                  </span>
+                  <input
+                    type="number"
+                    id="Discount"
+                    formControlName="discount"
+                    placeholder="Discount"
+                    autoComplete="off"
+                    class="form-control"/>
+                </c-input-group>
+                
+                <div *ngIf="form.get('discount')?.touched">
+                  <div *ngIf="form.get('discount')?.errors?.['min']" class="error-message mb-3">Discount must be a positive number.</div>
+                  <div *ngIf="form.get('discount')?.errors?.['max']" class="error-message mb-3">Discount must be less than or equal to 100.</div>
+                </div>
+
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon [cIcon]="icons.cilCart"></svg>
+                  </span>
+                  <select id="Product" formControlName="product" class="form-control">
+                    <option value="" disabled selected>Select a product</option>
+                    <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+                  </select>
+                </c-input-group>
+
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon [cIcon]="icons.cilTags"></svg>
+                  </span>
+                  <select id="Discount-Type" formControlName="discountType" class="form-control">
+                    <option value="" disabled selected>Select discount type</option>
+                    <option value="percentage">Percentage</option>
+                    <option value="fixed">Fixed Amount</option>
+                  </select>
+                </c-input-group>
+
+                <div class="initial-price">
+                  Initial price: {{ initialPrice }}
+                </div>
+                <div *ngIf="selectedProduct" class="final-price">
+                  Final price: {{ finalPrice }}
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button type="submit" class="btn btn-primary" [disabled]="isApplyDiscountDisabled()">
+                    Apply Discount
+                  </button>
+                  <button type="button" class="btn btn-secondary" (click)="disableDiscount()" [disabled]="isDisableDiscountDisabled()">
+                    Disable Discount
+                  </button>
+                </div>
+              </form>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
+    </c-container>
+  </div>
+</body>
