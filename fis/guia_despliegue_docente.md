@@ -10,7 +10,7 @@ El despliegue de aplicaciones y sitios web en la nube es una práctica fundament
 
 ## Requisitos
 
-- Un repositorio creado en la organización del dictado. ** Es fundamental que el alumno tenga acceso de administrador a su repositorio **. Esto deberá configurarse al momento de crear el assigment en GitHub Classroom, o en su defecto, solicitando esos permisos al administrador de la organización de GitHub.
+- Un repositorio creado en la organización del dictado. **Es fundamental que el alumno tenga acceso de administrador a su repositorio**. Esto deberá configurarse al momento de crear el assigment en GitHub Classroom, o en su defecto, solicitando esos permisos al administrador de la organización de GitHub.
 - Un proyecto creado en ese repositorio que cuente con un archivo `index.html`.
 
 ## Motivación
