@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{48EE75F6-D24B-40B3-B22E-7DF30B7F63D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesTest", "ServicesTest\ServicesTest.csproj", "{49DF0F15-E024-4953-A79D-84D691494091}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicTest", "LogicTest\LogicTest.csproj", "{49DF0F15-E024-4953-A79D-84D691494091}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainTests", "DomainTests\DomainTests.csproj", "{33DD4878-A17A-4E70-8494-83CE797F2F93}"
 EndProject
@@ -13,13 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryTests", "Reposito
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{0F01E18E-4CCC-4058-B3E4-C09EDCD7907B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{32073B3E-2165-4832-9FCE-E42890C83E73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{32073B3E-2165-4832-9FCE-E42890C83E73}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Interface\Interface.csproj", "{0E797A32-8852-45D3-85FF-22435E04CCDE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRepository", "IRepository\IRepository.csproj", "{55C22A5C-A1C4-4E1C-B218-AF7085E578C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IServicesImport", "IServicesImport\IServicesImport.csproj", "{85954896-2647-4CD5-82CC-519F2F1BDBA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILogicImport", "ILogicImport\ILogicImport.csproj", "{85954896-2647-4CD5-82CC-519F2F1BDBA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileReaders", "FileReaders\FileReaders.csproj", "{425B06E2-22E8-4F3E-870F-97241AFE4701}"
 EndProject

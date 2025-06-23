@@ -14,10 +14,10 @@ WORKDIR /src
 COPY ./Domain/Domain.csproj Domain/
 COPY ./FileReaders/FileReaders.csproj FileReaders/
 COPY ./Interface/Interface.csproj Interface/
-COPY ./Services/Services.csproj Services/
+COPY ./Logic/Logic.csproj Logic/
 COPY ./Repository/Repository.csproj Repository/
 COPY ./IRepository/IRepository.csproj IRepository/
-COPY ./IServicesImport/IServicesImport.csproj IServicesImport/
+COPY ./ILogicImport/ILogicImport.csproj ILogicImport/
 
 # Restaurar paquetes
 RUN dotnet restore Interface/Interface.csproj
@@ -25,11 +25,11 @@ RUN dotnet restore Interface/Interface.csproj
 # Copiar el resto de los archivos
 COPY ./Domain/ Domain/
 COPY ./Interface/ Interface/
-COPY ./Services/ Services/
+COPY ./Logic/ Logic/
 COPY ./Repository/ Repository/
 COPY ./FileReaders/ FileReaders/
 COPY ./IRepository/ IRepository/
-COPY ./IServicesImport/ IServicesImport/
+COPY ./ILogicImport/ ILogicImport/
 
 WORKDIR /src/Interface
 RUN dotnet build -c Release -o /app/build
