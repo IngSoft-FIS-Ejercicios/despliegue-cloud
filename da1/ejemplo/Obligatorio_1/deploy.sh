@@ -1,16 +1,9 @@
 #!/bin/bash
 set -e  # Sale si hay cualquier error
 
-#!/bin/bash
-set -e  # Sale si hay cualquier error
-
 # Preguntar variables al usuario
-read -p "🔧 Ingresá el nombre del Azure Container Registry (ACR_NAME): " ACR_NAME
 read -p "📦 Ingresá el nombre de la Container App (APP_NAME): " APP_NAME
 read -p "📁 Ingresá el nombre del Resource Group (RESOURCE_GROUP): " RESOURCE_GROUP
-read -p "🌍 Ingresá la región (LOCATION): " LOCATION
-read -p "🏞️ Ingresá el nombre del entorno de Container App (ENV_NAME): " ENV_NAME
-
 read -p "🛢️ Ingresá el nombre del servidor SQL (SQL_SERVER_NAME): " SQL_SERVER_NAME
 read -p "📚 Ingresá el nombre de la base de datos SQL (SQL_DB_NAME): " SQL_DB_NAME
 read -p "👤 Ingresá el nombre del usuario administrador SQL (SQL_ADMIN_USER): " SQL_ADMIN_USER
@@ -58,11 +51,11 @@ trap rollback ERR
 # ----------------------
 # Variables (ya cargadas con export)
 # ----------------------
-ACR_NAME=${ACR_NAME}
+ACR_NAME="acrda1"
 APP_NAME=${APP_NAME}
 RESOURCE_GROUP=${RESOURCE_GROUP}
-LOCATION=${LOCATION}
-ENV_NAME=${ENV_NAME}
+LOCATION="westus2"
+ENV_NAME="develop"
 
 SQL_SERVER_NAME=${SQL_SERVER_NAME}
 SQL_DB_NAME=${SQL_DB_NAME}
@@ -154,3 +147,4 @@ APP_URL=$(az containerapp show \
 
 echo "✅ Despliegue completo. Tu aplicación ya debería estar corriendo en:"
 echo "🌐 https://$APP_URL"
+
